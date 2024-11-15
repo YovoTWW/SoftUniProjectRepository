@@ -24,7 +24,7 @@ namespace EuropeBJJ.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> TournamentIndex()
         {
             var model = await dbContext.Events.OfType<Tournament>().Select(e => new TournamentViewModel()
             {
@@ -32,12 +32,43 @@ namespace EuropeBJJ.Controllers
                 Name = e.Name,
                 Country = e.Country,
                 City = e.City,
-                Link = e.Link
+                Link = e.Link,
             }).ToListAsync();
 
             return this.View(model);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> OpenMatIndex()
+        {
+            var model = await dbContext.Events.OfType<OpenMat>().Select(e => new OpenMatViewModel()
+            {
+                Image = e.Image,
+                Name = e.Name,
+                Country = e.Country,
+                City = e.City,             
+                Date = e.Date.ToString(DateFormat),
+                Location = e.Location              
+            }).ToListAsync();
 
+            return this.View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> SeminarIndex()
+        {
+            var model = await dbContext.Events.OfType<Seminar>().Select(e => new SeminarViewModel()
+            {
+                Image = e.Image,
+                Name = e.Name,
+                Country = e.Country,
+                City = e.City,
+                Date = e.Date.ToString(DateFormat),
+                Location = e.Location,
+                Teacher = e.Teacher
+            }).ToListAsync();
+
+            return this.View(model);
+        }
     }
 }

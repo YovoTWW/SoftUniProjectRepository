@@ -9,6 +9,6 @@ namespace EuropeBJJ.Constants
         public const int MinNameLength = 5;
         public const int MinDescriptionLength = 10;
         public const int MaxDescriptionLength = 250;
-        
+        public const string DateFormat = "dd-MM-yyyy";
     }
 }
