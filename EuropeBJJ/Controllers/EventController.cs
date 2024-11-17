@@ -109,7 +109,8 @@ namespace EuropeBJJ.Controllers
                MembersPrice = model.MembersPrice,
                NonMembersPrice = model.NonMembersPrice,
                Image = model.Image,
-               Description = model.Description
+               Description = model.Description,
+               AccountId = GetCurrentUserId() ?? string.Empty
             };
 
             await dbContext.Events.AddAsync(openmat);
