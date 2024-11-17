@@ -5,6 +5,8 @@ using System.Security.Claims;
 using static EuropeBJJ.Constants.ModelConstants;
 using EuropeBJJ.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.CodeAnalysis;
+using System.Globalization;
 
 namespace EuropeBJJ.Controllers
 {
@@ -40,18 +42,18 @@ namespace EuropeBJJ.Controllers
 
         [HttpGet]
         public async Task<IActionResult> OpenMatIndex()
-        {
-            var model = await dbContext.Events.OfType<OpenMat>().Select(e => new OpenMatViewModel()
-            {
-                Image = e.Image,
-                Name = e.Name,
-                Country = e.Country,
-                City = e.City,             
-                Date = e.Date.ToString(DateFormat),
-                Location = e.Location              
-            }).ToListAsync();
+        {                  
+                var model = await dbContext.Events.OfType<OpenMat>().Select(e => new OpenMatViewModel()
+                {
+                    Image = e.Image,
+                    Name = e.Name,
+                    Country = e.Country,
+                    City = e.City,
+                    Date = e.Date.ToString(DateFormat),
+                    Location = e.Location
+                }).ToListAsync();
 
-            return this.View(model);
+                return this.View(model);                      
         }
 
         [HttpGet]
@@ -69,6 +71,51 @@ namespace EuropeBJJ.Controllers
             }).ToListAsync();
 
             return this.View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AddOpenMat()
+        {
+            var model = new AddOpenMatViewModel();
+            return this.View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddOpenMat(AddOpenMatViewModel model)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(model);
+            }
+
+            bool validAddedOn = DateTime.TryParseExact(model.Date, DateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime date);
+
+            if (!validAddedOn)
+            {
+                ModelState.AddModelError(nameof(model.Date), "Invalid date format");
+                return this.View(model);
+            }
+
+            
+
+            OpenMat openmat = new OpenMat
+            {
+               Name = model.Name,
+               Country = model.Country,
+               City = model.City,
+               Location = model.Location,
+               Date = date,
+               Organiser = model.Organiser,
+               MembersPrice = model.MembersPrice,
+               NonMembersPrice = model.NonMembersPrice,
+               Image = model.Image,
+               Description = model.Description
+            };
+
+            await dbContext.Events.AddAsync(openmat);
+            await dbContext.SaveChangesAsync();
+
+            return this.RedirectToAction("TournamentIndex");
         }
     }
 }
