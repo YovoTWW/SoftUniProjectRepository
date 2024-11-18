@@ -4,6 +4,7 @@ using EuropeBJJ.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EuropeBJJ.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241118101150_Refactoring1")]
+    partial class Refactoring1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -280,104 +283,6 @@ namespace EuropeBJJ.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("EuropeBJJ.Data.Models.OpenMat", b =>
-                {
-                    b.HasBaseType("EuropeBJJ.Data.Models.Event");
-
-                    b.Property<string>("AccountId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.Property<bool>("IsRemoved")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Location")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal?>("MembersPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal?>("NonMembersPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Organiser")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasIndex("AccountId");
-
-                    b.HasDiscriminator().HasValue("OpenMat");
-                });
-
-            modelBuilder.Entity("EuropeBJJ.Data.Models.Seminar", b =>
-                {
-                    b.HasBaseType("EuropeBJJ.Data.Models.Event");
-
-                    b.Property<string>("AccountId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.Property<bool>("IsRemoved")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Location")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal?>("MembersPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal?>("NonMembersPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Organiser")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Teacher")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasIndex("AccountId");
-
-                    b.ToTable("Events", t =>
-                        {
-                            t.Property("AccountId")
-                                .HasColumnName("Seminar_AccountId");
-
-                            t.Property("Description")
-                                .HasColumnName("Seminar_Description");
-
-                            t.Property("IsRemoved")
-                                .HasColumnName("Seminar_IsRemoved");
-
-                            t.Property("Location")
-                                .HasColumnName("Seminar_Location");
-
-                            t.Property("MembersPrice")
-                                .HasColumnName("Seminar_MembersPrice");
-
-                            t.Property("NonMembersPrice")
-                                .HasColumnName("Seminar_NonMembersPrice");
-
-                            t.Property("Organiser")
-                                .HasColumnName("Seminar_Organiser");
-                        });
-
-                    b.HasDiscriminator().HasValue("Seminar");
-                });
-
             modelBuilder.Entity("EuropeBJJ.Data.Models.Tournament", b =>
                 {
                     b.HasBaseType("EuropeBJJ.Data.Models.Event");
@@ -394,7 +299,7 @@ namespace EuropeBJJ.Data.Migrations
                             Id = 1,
                             City = "Sofia",
                             Country = "Bulgaria",
-                            Date = new DateTime(2024, 11, 18, 12, 20, 54, 768, DateTimeKind.Local).AddTicks(1623),
+                            Date = new DateTime(2024, 11, 18, 12, 11, 49, 742, DateTimeKind.Local).AddTicks(8108),
                             Discriminator = "Tournament",
                             Image = "https://smoothcomp.com/pictures/t/4582681-vxth/adcc-balkan-open-championships-2024.png",
                             Name = "ADCC Balkans Open",
@@ -405,7 +310,7 @@ namespace EuropeBJJ.Data.Migrations
                             Id = 2,
                             City = "Sofia",
                             Country = "Bulgaria",
-                            Date = new DateTime(2024, 11, 18, 12, 20, 54, 768, DateTimeKind.Local).AddTicks(1674),
+                            Date = new DateTime(2024, 11, 18, 12, 11, 49, 742, DateTimeKind.Local).AddTicks(8157),
                             Discriminator = "Tournament",
                             Image = "https://smoothcomp.com/pictures/t/4794848-q7z/2024-bulgarian-jiu-jitsu-championship.jpg",
                             Name = "AGF 2024 BULGARIAN JIU JITSU CHAMPIONSHIPS",
@@ -416,7 +321,7 @@ namespace EuropeBJJ.Data.Migrations
                             Id = 3,
                             City = "Sofia",
                             Country = "Bulgaria",
-                            Date = new DateTime(2024, 11, 18, 12, 20, 54, 768, DateTimeKind.Local).AddTicks(1678),
+                            Date = new DateTime(2024, 11, 18, 12, 11, 49, 742, DateTimeKind.Local).AddTicks(8162),
                             Discriminator = "Tournament",
                             Image = "https://ajptour.com/build/webpack/img/ajp/fallback.a01f59147724b9274315365bd75f5b21.jpg",
                             Name = "AJP TOUR BULGARIA NATIONAL JIU-JITSU CHAMPIONSHIP 2024 - GI & NO-GI",
@@ -427,7 +332,7 @@ namespace EuropeBJJ.Data.Migrations
                             Id = 4,
                             City = "Lisbon",
                             Country = "Portugal",
-                            Date = new DateTime(2024, 11, 18, 12, 20, 54, 768, DateTimeKind.Local).AddTicks(1681),
+                            Date = new DateTime(2024, 11, 18, 12, 11, 49, 742, DateTimeKind.Local).AddTicks(8166),
                             Discriminator = "Tournament",
                             Image = "https://ibjjf.com/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBam9hIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--17bf4a00266e5788a79c44d985d0b399c0ab0bec/lisbon-2024-logo-website-white%20(1).png",
                             Name = "Lisbon International Open IBJJF Jiu-Jitsu Championship 2024",
@@ -503,28 +408,6 @@ namespace EuropeBJJ.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("EuropeBJJ.Data.Models.OpenMat", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Account")
-                        .WithMany()
-                        .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Account");
-                });
-
-            modelBuilder.Entity("EuropeBJJ.Data.Models.Seminar", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Account")
-                        .WithMany()
-                        .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Account");
                 });
 #pragma warning restore 612, 618
         }
