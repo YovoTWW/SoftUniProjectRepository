@@ -169,5 +169,53 @@ namespace EuropeBJJ.Controllers
 
             return this.RedirectToAction("Index", "Home");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> AddTournament()
+        {
+            var model = new AddSeminarViewModel();
+            return this.View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddTournament(AddSeminarViewModel model)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(model);
+            }
+
+            bool validAddedOn = DateTime.TryParseExact(model.Date, DateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime date);
+
+            if (!validAddedOn)
+            {
+                ModelState.AddModelError(nameof(model.Date), "Invalid date format");
+                return this.View(model);
+            }
+
+
+
+            Seminar seminar = new Seminar
+            {
+                Name = model.Name,
+                Country = model.Country,
+                City = model.City,
+                Location = model.Location,
+                Date = date,
+                Organiser = model.Organiser,
+                MembersPrice = model.MembersPrice,
+                NonMembersPrice = model.NonMembersPrice,
+                Image = model.Image,
+                Description = model.Description,
+                Teacher = model.Teacher,
+                AccountId = GetCurrentUserId() ?? string.Empty,
+                IsRemoved = false
+            };
+
+            await dbContext.Events.AddAsync(seminar);
+            await dbContext.SaveChangesAsync();
+
+            return this.RedirectToAction("Index", "Home");
+        }
     }
 }
