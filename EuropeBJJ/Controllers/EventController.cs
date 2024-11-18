@@ -43,7 +43,7 @@ namespace EuropeBJJ.Controllers
         [HttpGet]
         public async Task<IActionResult> OpenMatIndex()
         {
-            var model =  await dbContext.Events.OfType<OrganizedEvent>().OfType<OpenMat>().Select(e => new OpenMatViewModel()      
+            var model =  await dbContext.Events.OfType<OpenMat>().Select(e => new OpenMatViewModel()      
         {
                 Image = e.Image,
                 Name = e.Name,
@@ -61,7 +61,7 @@ namespace EuropeBJJ.Controllers
         [HttpGet]
         public async Task<IActionResult> SeminarIndex()
         {
-            var model = await dbContext.Events.OfType<OrganizedEvent>().OfType<Seminar>().Select(e => new SeminarViewModel()
+            var model = await dbContext.Events.OfType<Seminar>().Select(e => new SeminarViewModel()
             {
                 Image = e.Image,
                 Name = e.Name,
