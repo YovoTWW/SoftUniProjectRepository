@@ -173,12 +173,12 @@ namespace EuropeBJJ.Controllers
         [HttpGet]
         public async Task<IActionResult> AddTournament()
         {
-            var model = new AddSeminarViewModel();
+            var model = new AddTournamentViewModel();
             return this.View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddTournament(AddSeminarViewModel model)
+        public async Task<IActionResult> AddTournament(AddTournamentViewModel model)
         {
             if (!this.ModelState.IsValid)
             {
@@ -195,24 +195,19 @@ namespace EuropeBJJ.Controllers
 
 
 
-            Seminar seminar = new Seminar
+            Tournament tournament = new Tournament
             {
                 Name = model.Name,
                 Country = model.Country,
-                City = model.City,
-                Location = model.Location,
-                Date = date,
-                Organiser = model.Organiser,
-                MembersPrice = model.MembersPrice,
-                NonMembersPrice = model.NonMembersPrice,
+                City = model.City,               
+                Date = date,               
                 Image = model.Image,
-                Description = model.Description,
-                Teacher = model.Teacher,
+                Link = model.Link,
                 AccountId = GetCurrentUserId() ?? string.Empty,
                 IsRemoved = false
             };
 
-            await dbContext.Events.AddAsync(seminar);
+            await dbContext.Events.AddAsync(tournament);
             await dbContext.SaveChangesAsync();
 
             return this.RedirectToAction("Index", "Home");
