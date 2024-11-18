@@ -19,7 +19,7 @@ namespace EuropeBJJ.Controllers
             this.dbContext = context;
         }
 
-        private string? GetCurrentUserId()
+        public string? GetCurrentUserId()
         {
             return User.FindFirstValue(ClaimTypes.NameIdentifier);
         }
