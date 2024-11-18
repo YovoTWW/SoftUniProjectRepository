@@ -16,7 +16,7 @@ namespace EuropeBJJ.Models
         [MaxLength(MaxNameLength)]
         public string City { get; set; } = null!;
 
-        public string Image { get; set; } = null!;
+        public string? Image { get; set; } 
 
         [MinLength(MinNameLength)]
         [MaxLength(MaxNameLength)]
