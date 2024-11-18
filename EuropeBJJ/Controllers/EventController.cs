@@ -24,11 +24,7 @@ namespace EuropeBJJ.Controllers
             return User.FindFirstValue(ClaimTypes.NameIdentifier);
         }
 
-        public bool isAdmin;
-
-
-
-
+        
         [HttpGet]
         public async Task<IActionResult> TournamentIndex()
         {
