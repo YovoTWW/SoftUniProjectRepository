@@ -50,7 +50,7 @@ namespace EuropeBJJ.Controllers
                 Country = e.Country,
                 City = e.City,
                 Date = e.Date.ToString(DateFormat),
-                
+                Location = e.Location              
             }).ToListAsync();
 
           
