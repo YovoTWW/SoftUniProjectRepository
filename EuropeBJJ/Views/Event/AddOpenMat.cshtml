@@ -19,6 +19,11 @@
                     <span asp-validation-for="@Model.Name" class="text-danger"></span>
                 </div>
                 <div class="col-sm-6 mb-2">
+                    <label asp-for="@Model.Organiser" class="form-label-add-edit">Event Organiser</label>
+                    <input asp-for="@Model.Organiser" class="form-control" aria-required="true" />
+                    <span asp-validation-for="@Model.Organiser" class="text-danger"></span>
+                </div>
+                <div class="col-sm-6 mb-2">
                     <label asp-for="@Model.MembersPrice" class="form-label-add-edit">Price for Members of the Organiser Gym</label>
                     <div class="input-group">
                         <span class="input-group-text">€</span>
@@ -26,7 +31,7 @@
                     </div>
                     <span asp-validation-for="@Model.MembersPrice" class="text-danger"></span>
                 </div>
-                <div class="col-sm-7 mb-3">
+                <div class="col-sm-6 mb-2">
                     <label asp-for="@Model.NonMembersPrice" class="form-label-add-edit">Price for Non-Members of the Organiser Gym</label>
                     <div class="input-group">
                         <span class="input-group-text">€</span>
