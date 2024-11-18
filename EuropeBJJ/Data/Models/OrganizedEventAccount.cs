@@ -10,7 +10,7 @@ namespace EuropeBJJ.Data.Models
         public int OrganizedEventId { get; set; }
 
         [ForeignKey(nameof(OrganizedEventId))]
-        public OrganizedEvent OrganizedEvent { get; set; } = null!;
+        public Event OrganizedEvent { get; set; } = null!;
 
         [Required]
         public string AccountId { get; set; } = null!;

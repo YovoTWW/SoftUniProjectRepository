@@ -42,24 +42,26 @@ namespace EuropeBJJ.Controllers
 
         [HttpGet]
         public async Task<IActionResult> OpenMatIndex()
-        {                  
-                var model = await dbContext.Events.OfType<OpenMat>().Select(e => new OpenMatViewModel()
-                {
-                    Image = e.Image,
-                    Name = e.Name,
-                    Country = e.Country,
-                    City = e.City,
-                    Date = e.Date.ToString(DateFormat),
-                    Location = e.Location
-                }).ToListAsync();
+        {
+            var model =  await dbContext.Events.OfType<OrganizedEvent>().OfType<OpenMat>().Select(e => new OpenMatViewModel()      
+        {
+                Image = e.Image,
+                Name = e.Name,
+                Country = e.Country,
+                City = e.City,
+                Date = e.Date.ToString(DateFormat),
+                
+            }).ToListAsync();
 
-                return this.View(model);                      
+          
+
+            return this.View(model);                      
         }
 
         [HttpGet]
         public async Task<IActionResult> SeminarIndex()
         {
-            var model = await dbContext.Events.OfType<Seminar>().Select(e => new SeminarViewModel()
+            var model = await dbContext.Events.OfType<OrganizedEvent>().OfType<Seminar>().Select(e => new SeminarViewModel()
             {
                 Image = e.Image,
                 Name = e.Name,
