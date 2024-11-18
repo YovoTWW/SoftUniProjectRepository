@@ -117,7 +117,7 @@ namespace EuropeBJJ.Controllers
             await dbContext.Events.AddAsync(openmat);
             await dbContext.SaveChangesAsync();
 
-            return this.RedirectToAction("TournamentIndex");
+            return this.RedirectToAction("Index","Home");
         }
     }
 }
