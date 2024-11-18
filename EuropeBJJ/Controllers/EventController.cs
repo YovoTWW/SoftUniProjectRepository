@@ -96,21 +96,22 @@ namespace EuropeBJJ.Controllers
                 return this.View(model);
             }
 
-            
+
 
             OpenMat openmat = new OpenMat
             {
-               Name = model.Name,
-               Country = model.Country,
-               City = model.City,
-               Location = model.Location,
-               Date = date,
-               Organiser = model.Organiser,
-               MembersPrice = model.MembersPrice,
-               NonMembersPrice = model.NonMembersPrice,
-               Image = model.Image,
-               Description = model.Description,
-               AccountId = GetCurrentUserId() ?? string.Empty
+                Name = model.Name,
+                Country = model.Country,
+                City = model.City,
+                Location = model.Location,
+                Date = date,
+                Organiser = model.Organiser,
+                MembersPrice = model.MembersPrice,
+                NonMembersPrice = model.NonMembersPrice,
+                Image = model.Image,
+                Description = model.Description,
+                AccountId = GetCurrentUserId() ?? string.Empty,
+                IsRemoved = false
             };
 
             await dbContext.Events.AddAsync(openmat);
