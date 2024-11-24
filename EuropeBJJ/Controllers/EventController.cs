@@ -231,7 +231,7 @@ namespace EuropeBJJ.Controllers
                     City = e.City,
                     Date = e.Date.ToString(DateFormat),
                     Image = e.Image,
-                    EventType = e.GetType().ToString()
+                    EventType = e.Discriminator
                 }).AsNoTracking().ToListAsync();
 
             return this.View(model);

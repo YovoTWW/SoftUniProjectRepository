@@ -35,6 +35,12 @@
                                 <a class="dropdown-item" asp-controller="Event" asp-action="SeminarIndex">Seminars</a>                               
                             </div>
                         </li>
+                        @if (User?.Identity?.IsAuthenticated ?? false)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Event" asp-action="Pinned">Pinned Events</a>
+                            </li>
+                        }
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
