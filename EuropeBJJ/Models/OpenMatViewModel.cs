@@ -11,7 +11,7 @@ namespace EuropeBJJ.Models
 
         public string City { get; set; } = null!;
 
-        public string Image { get; set; } = null!;
+        public string? Image { get; set; } 
       
         public string Location { get; set; } = null!;
 

@@ -215,22 +215,51 @@ namespace EuropeBJJ.Controllers
 
 
 
-       /* [HttpGet]
+        [HttpGet]
         public async Task<IActionResult> Pinned()
         {
             string currentUserId = GetCurrentUserId() ?? string.Empty;
 
-            var model = await dbContext.Events.Where(e => e.IsRemoved == false).Where(e =>e.EventAccounts.Any(ea => ea.AccountId == currentUserId))
-                .Select(p => new ProductViewModel()
+            var model = await dbContext.Events.Where(e => e.IsRemoved == false).Where(e => e.EventAccounts.Any(ea => ea.AccountId == currentUserId))
+                .Select(e => new EventGeneralisedViewModel()
                 {
-                    Id = p.Id,
-                    ImageUrl = p.ImageUrl,
-                    ProductName = p.ProductName,
-                    Price = p.Price,
-                    IsSeller = currentUserId.Equals(p.SellerId)
+                    Name = e.Name,
+                    Country = e.Country,
+                    City = e.City,
+                    Date = e.Date.ToString(DateFormat),
+                    Image = e.Image,
+                    EventType = e.GetType().ToString()
                 }).AsNoTracking().ToListAsync();
 
             return this.View(model);
-        }*/
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> AddToPinned(int id)
+        {
+            string currentUserId = GetCurrentUserId() ?? string.Empty;
+            Event? entity = await dbContext.Events.Where(e => e.Id == id).Include(e => e.EventAccounts).FirstOrDefaultAsync();
+
+            if (entity == null || entity.IsRemoved)
+            {
+                throw new ArgumentException("Invalid id");
+            }
+
+            if (entity.EventAccounts.Any(ea=> ea.AccountId == currentUserId))
+            {
+                return this.RedirectToAction("Index","Home");
+            }
+
+            entity.EventAccounts.Add(new EventAccount()
+            {
+                AccountId = currentUserId,
+                EventId = entity.Id
+            });
+
+            await dbContext.SaveChangesAsync();
+
+            return this.RedirectToAction("Pinned");
+        }
     }
 }
