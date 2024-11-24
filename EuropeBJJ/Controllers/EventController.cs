@@ -30,6 +30,7 @@ namespace EuropeBJJ.Controllers
         {
             var model = await dbContext.Events.OfType<Tournament>().Select(e => new TournamentViewModel()
             {
+                Id = e.Id,
                 Image = e.Image,
                 Name = e.Name,
                 Country = e.Country,
@@ -45,6 +46,7 @@ namespace EuropeBJJ.Controllers
         {
             var model =  await dbContext.Events.OfType<OpenMat>().Select(e => new OpenMatViewModel()      
         {
+                Id = e.Id,
                 Image = e.Image,
                 Name = e.Name,
                 Country = e.Country,
@@ -63,6 +65,7 @@ namespace EuropeBJJ.Controllers
         {
             var model = await dbContext.Events.OfType<Seminar>().Select(e => new SeminarViewModel()
             {
+                Id = e.Id,
                 Image = e.Image,
                 Name = e.Name,
                 Country = e.Country,

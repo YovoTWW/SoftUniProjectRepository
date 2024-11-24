@@ -33,20 +33,20 @@
                     <h5 class="card-title">@tournament.Name</h5>
                     <p class="card-text">Location: @tournament.City , @tournament.Country</p>
                     <p class="card-text">Link: @tournament.Link</p>
-                    @* <div class="d-flex justify-content-between mt-auto">
-                        @if (User?.Identity?.IsAuthenticated == true && !tournament.IsSeller && !tournament.HasBought)
+                     <div class="d-flex justify-content-between mt-auto">
+                        @if (User?.Identity?.IsAuthenticated == true )
                         {
-                            <a asp-controller="Product" asp-action="Details" asp-route-id="@tournament.Id" class="btn btn-info me-2 w-50">Details</a>
-                            <form asp-controller="Product" asp-action="AddToCart" method="post" class="w-50">
+                            <a asp-controller="Event" asp-action="Details" asp-route-id="@tournament.Id" class="btn btn-info me-2 w-50">Details</a>
+                            <form asp-controller="Event" asp-action="AddToPinned" method="post" class="w-50">
                                 <input type="hidden" name="id" value="@tournament.Id" />
-                                <button type="submit" class="btn btn-success w-100">Buy</button>
+                                <button type="submit" class="btn btn-success w-100">Pin</button>
                             </form>
                         }
                         else
                         {
-                            <a asp-controller="Product" asp-action="Details" asp-route-id="@tournament.Id" class="btn btn-info w-100">Details</a>
+                            <a asp-controller="Event" asp-action="Details" asp-route-id="@tournament.Id" class="btn btn-info w-100">Details</a>
                         }
-                    </div> *@
+                    </div> 
                 </div>
             </div>
         </div>
