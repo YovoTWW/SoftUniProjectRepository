@@ -55,5 +55,7 @@ namespace EuropeBJJ.Data.Models
 
         public bool IsRemoved { get; set; }
         public string? Teacher { get; set; }
+
+        public List<EventAccount> EventAccounts { get; set; } = new List<EventAccount>();
     }
 }

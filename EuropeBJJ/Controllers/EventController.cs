@@ -212,5 +212,25 @@ namespace EuropeBJJ.Controllers
 
             return this.RedirectToAction("Index", "Home");
         }
+
+
+
+       /* [HttpGet]
+        public async Task<IActionResult> Pinned()
+        {
+            string currentUserId = GetCurrentUserId() ?? string.Empty;
+
+            var model = await dbContext.Events.Where(e => e.IsRemoved == false).Where(e =>e.EventAccounts.Any(ea => ea.AccountId == currentUserId))
+                .Select(p => new ProductViewModel()
+                {
+                    Id = p.Id,
+                    ImageUrl = p.ImageUrl,
+                    ProductName = p.ProductName,
+                    Price = p.Price,
+                    IsSeller = currentUserId.Equals(p.SellerId)
+                }).AsNoTracking().ToListAsync();
+
+            return this.View(model);
+        }*/
     }
 }

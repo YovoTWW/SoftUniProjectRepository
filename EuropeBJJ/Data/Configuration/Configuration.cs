@@ -4,11 +4,11 @@ using EuropeBJJ.Data.Models;
 
 namespace EuropeBJJ.Data.Configuration
 {
-    public class Configuration : IEntityTypeConfiguration<OrganizedEventAccount>
+    public class Configuration : IEntityTypeConfiguration<EventAccount>
     {
-        public void Configure(EntityTypeBuilder<OrganizedEventAccount> builder)
+        public void Configure(EntityTypeBuilder<EventAccount> builder)
         {
-            builder.HasKey(oea => new { oea.OrganizedEventId, oea.AccountId });
+            builder.HasKey(oea => new { oea.EventId, oea.AccountId });
         }
     }
 }

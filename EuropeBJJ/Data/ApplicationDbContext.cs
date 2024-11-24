@@ -34,7 +34,7 @@ namespace EuropeBJJ.Data
 
         public DbSet<Event> Events { get; set; }
 
-        public DbSet<OrganizedEventAccount> OrganizedEventsAccounts { get; set; }
+        public DbSet<EventAccount> EventsAccounts { get; set; }
 
     }
 }

@@ -4,13 +4,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EuropeBJJ.Data.Models
 {
-    public class OrganizedEventAccount
+    public class EventAccount
     {
         [Required]
-        public int OrganizedEventId { get; set; }
+        public int EventId { get; set; }
 
-        [ForeignKey(nameof(OrganizedEventId))]
-        public Event OrganizedEvent { get; set; } = null!;
+        [ForeignKey(nameof(EventId))]
+        public Event Event { get; set; } = null!;
 
         [Required]
         public string AccountId { get; set; } = null!;
