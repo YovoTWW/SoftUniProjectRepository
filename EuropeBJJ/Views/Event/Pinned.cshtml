@@ -26,20 +26,12 @@
                     <h5 class="card-title">@Event.Name</h5>
                     <p class="card-text">Location: @Event.City , @Event.Country</p>
                     <p class="card-text">Event Type: @Event.EventType</p>
-                    @* <div class="d-flex justify-content-between mt-auto">
-                @if (User?.Identity?.IsAuthenticated == true && !tournament.IsSeller && !tournament.HasBought)
-                {
-                <a asp-controller="Product" asp-action="Details" asp-route-id="@tournament.Id" class="btn btn-info me-2 w-50">Details</a>
-                <form asp-controller="Product" asp-action="AddToCart" method="post" class="w-50">
-                <input type="hidden" name="id" value="@tournament.Id" />
-                <button type="submit" class="btn btn-success w-100">Buy</button>
+                     <div class="d-flex justify-content-between mt-auto">           
+                <a asp-controller="Event" asp-action="Details" asp-route-id="@Event.Id" class="btn btn-info me-2 w-50">Details</a>
+                <form asp-controller="Event" asp-action="RemoveFromPinned" asp-route-id="@Event.Id" method="post" style="display:inline;">
+                <button type="submit" class="btn btn-danger">Remove from Pinned</button>
                 </form>
-                }
-                else
-                {
-                <a asp-controller="Product" asp-action="Details" asp-route-id="@tournament.Id" class="btn btn-info w-100">Details</a>
-                }
-                </div> *@
+                </div> 
                 </div>
             </div>
         </div>

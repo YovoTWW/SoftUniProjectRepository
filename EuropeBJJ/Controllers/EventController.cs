@@ -226,6 +226,7 @@ namespace EuropeBJJ.Controllers
             var model = await dbContext.Events.Where(e => e.IsRemoved == false).Where(e => e.EventAccounts.Any(ea => ea.AccountId == currentUserId))
                 .Select(e => new EventGeneralisedViewModel()
                 {
+                    Id = e.Id,
                     Name = e.Name,
                     Country = e.Country,
                     City = e.City,
