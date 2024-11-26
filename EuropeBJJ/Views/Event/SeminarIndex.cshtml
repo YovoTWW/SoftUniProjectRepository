@@ -35,7 +35,7 @@
                     <div class="d-flex justify-content-between mt-auto">
                         @if (User?.Identity?.IsAuthenticated == true)
                         {
-                            <a asp-controller="Event" asp-action="Details" asp-route-id="@Seminar.Id" class="btn btn-info me-2 w-50">Details</a>
+                            <a asp-controller="Event" asp-action="SeminarDetails" asp-route-id="@Seminar.Id" class="btn btn-info me-2 w-50">Details</a>
                             <form asp-controller="Event" asp-action="AddToPinned" method="post" class="w-50">
                                 <input type="hidden" name="id" value="@Seminar.Id" />
                                 <button type="submit" class="btn btn-success w-100">Pin</button>
@@ -43,7 +43,7 @@
                         }
                         else
                         {
-                            <a asp-controller="Event" asp-action="Details" asp-route-id="@Seminar.Id" class="btn btn-info w-100">Details</a>
+                            <a asp-controller="Event" asp-action="SeminarDetails" asp-route-id="@Seminar.Id" class="btn btn-info w-100">Details</a>
                         }
                     </div>
                 </div>

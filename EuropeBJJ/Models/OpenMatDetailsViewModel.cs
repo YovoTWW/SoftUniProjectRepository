@@ -3,9 +3,10 @@ using static EuropeBJJ.Constants.ModelConstants;
 
 namespace EuropeBJJ.Models
 {
-    public class AddOpenMatViewModel
+    public class OpenMatDetailsViewModel
     {
-        
+        public int Id { get; set; }
+
         [MaxLength(MaxEventNameLength)]
         public string Name { get; set; } = null!;
 
@@ -17,7 +18,7 @@ namespace EuropeBJJ.Models
         [MaxLength(MaxNameLength)]
         public string City { get; set; } = null!;
 
-        public string? Image { get; set; } 
+        public string? Image { get; set; }
 
         [MinLength(MinNameLength)]
         [MaxLength(MaxNameLength)]
@@ -28,9 +29,9 @@ namespace EuropeBJJ.Models
         [MaxLength(MaxNameLength)]
         public string Location { get; set; } = null!;
 
-        public decimal? MembersPrice { get; set; }
+        public decimal MembersPrice { get; set; }
 
-        public decimal? NonMembersPrice { get; set; }
+        public decimal NonMembersPrice { get; set; }
 
         [MinLength(MinDescriptionLength)]
         [MaxLength(MaxDescriptionLength)]

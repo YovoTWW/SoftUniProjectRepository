@@ -111,8 +111,8 @@ namespace EuropeBJJ.Controllers
                 Location = model.Location,
                 Date = date,
                 Organiser = model.Organiser,
-                MembersPrice = model.MembersPrice,
-                NonMembersPrice = model.NonMembersPrice,
+                MembersPrice = model.MembersPrice ?? 0m,
+                NonMembersPrice = model.NonMembersPrice ?? 0m,
                 Image = model.Image,
                 Description = model.Description,
                 AccountId = GetCurrentUserId() ?? string.Empty,
@@ -158,8 +158,8 @@ namespace EuropeBJJ.Controllers
                 Location = model.Location,
                 Date = date,
                 Organiser = model.Organiser,
-                MembersPrice = model.MembersPrice,
-                NonMembersPrice = model.NonMembersPrice,
+                MembersPrice = model.MembersPrice ?? 0m,
+                NonMembersPrice = model.NonMembersPrice ?? 0m,
                 Image = model.Image,
                 Description = model.Description,
                 Teacher = model.Teacher,
@@ -296,7 +296,8 @@ namespace EuropeBJJ.Controllers
             string currentUserId = GetCurrentUserId() ?? string.Empty;
 
             var model = await dbContext.Events.Where(e => e.Id == id).Where(e => e.IsRemoved == false).AsNoTracking().Select(e => new TournamentViewModel
-            {                
+            {            
+                Id = e.Id,
                 Image = e.Image,
                 Name = e.Name,
                 Country = e.Country,
@@ -313,9 +314,9 @@ namespace EuropeBJJ.Controllers
         {
             string currentUserId = GetCurrentUserId() ?? string.Empty;
 
-            var model = await dbContext.Events.Where(e => e.Id == id).Where(e => e.IsRemoved == false).AsNoTracking().Select(e => new AddOpenMatViewModel
+            var model = await dbContext.Events.Where(e => e.Id == id).Where(e => e.IsRemoved == false).AsNoTracking().Select(e => new OpenMatDetailsViewModel
             {
-                
+                Id = e.Id,
                 Image = e.Image,
                 Name = e.Name,
                 Country = e.Country,
@@ -324,10 +325,9 @@ namespace EuropeBJJ.Controllers
                 Description = e.Description,
                 Location = e.Location,
                 Organiser = e.Organiser,
-                MembersPrice = e.MembersPrice,
-                NonMembersPrice = e.NonMembersPrice
+                MembersPrice = e.MembersPrice ?? 0m,
+                NonMembersPrice = e.NonMembersPrice ?? 0m
             }).FirstOrDefaultAsync();
-
 
             return this.View(model);
         }
@@ -338,8 +338,9 @@ namespace EuropeBJJ.Controllers
         {
             string currentUserId = GetCurrentUserId() ?? string.Empty;
 
-            var model = await dbContext.Events.Where(e => e.Id == id).Where(e => e.IsRemoved == false).AsNoTracking().Select(e => new AddSeminarViewModel
+            var model = await dbContext.Events.Where(e => e.Id == id).Where(e => e.IsRemoved == false).AsNoTracking().Select(e => new SeminarDetailsViewModel
             {
+                Id = e.Id,
                 Image = e.Image,
                 Name = e.Name,
                 Country = e.Country,
@@ -348,14 +349,15 @@ namespace EuropeBJJ.Controllers
                 Description = e.Description,
                 Location = e.Location,
                 Organiser = e.Organiser,
-                MembersPrice = e.MembersPrice,
-                NonMembersPrice = e.NonMembersPrice,
+                MembersPrice = e.MembersPrice ?? 0m,
+                NonMembersPrice = e.NonMembersPrice ?? 0m,
                 Teacher = e.Teacher
             }).FirstOrDefaultAsync();
 
-
             return this.View(model);
         }
+
+
     }
 
 

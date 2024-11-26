@@ -5,6 +5,8 @@ namespace EuropeBJJ.Models
 {
     public class AddSeminarViewModel
     {
+        
+
         [MaxLength(MaxEventNameLength)]
         public string Name { get; set; } = null!;
 

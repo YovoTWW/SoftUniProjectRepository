@@ -1,0 +1,59 @@
+﻿@model OpenMatDetailsViewModel
+
+@{
+    ViewData["Title"] = "OpenMat Details";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: 20px;">
+    <h2>@ViewData["Title"]</h2>
+</div>
+<hr />
+
+<div class="row justify-content-center" style="margin: 0 auto; max-width: 800px;">
+    <div class="col-md-4 text-center">
+        @if (!string.IsNullOrEmpty(Model.Image))
+        {
+            <img src="@Model.Image" class="img-fluid" style="max-width: 100%; height: auto;" alt="@Model.Name" />
+        }
+        else
+        {
+            <img src="~/img/no-image-available-02.jpg" class="img-fluid" style="max-width: 100%; height: auto;" alt="No Image Available" />
+        }
+    </div>
+
+    <div class="col-md-8">
+        <div class="card-body">
+            <h5 class="card-title">@Model.Name</h5>
+            <hr />
+            <h6 class="card-subtitle mb-2 text-muted">@Model.Country , @Model.City</h6>
+            <h6 class="card-subtitle mb-2 text-muted">Exact Location : @Model.Location</h6>
+            <hr />
+            <p class="card-text">Description:</p>
+            <p>@Model.Description</p>
+            <hr />
+            <p class="card-text"><small class="text-muted">Event Type : OpenMat </small></p>
+            <p class="card-text"><small class="text-muted">Date : @Model.Date</small></p>
+            <p class="card-text"><small class="text-muted">Organiser : @Model.Organiser</small></p>
+            <hr />
+            <p class="card-text"><small class="text-muted">Price for Members : @Model.MembersPrice.ToString("\u20AC0.00") / Price for Non Members : @Model.NonMembersPrice.ToString(("\u20AC0.00"))</small></p>
+            <hr />
+        </div>
+        <div class="card-footer text-center">
+            <div class="d-flex justify-content-between align-items-center">
+                <a asp-controller="Home" asp-action="Index" class="btn btn-warning d-flex justify-content-center align-items-center flex-fill mx-1">Back</a>
+                @if (User?.Identity?.IsAuthenticated == true)
+                {
+                    <form asp-controller="Event" asp-action="AddToPinned" method="post" class="d-flex justify-content-center align-items-center flex-fill mx-1">
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <button type="submit" class="btn btn-success w-100">Pin</button>
+                    </form>
+                }
+                @*@if (User?.Identity?.Name == @Model.Seller)*@
+                {
+                <a asp-controller="Event" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary d-flex justify-content-center align-items-center flex-fill mx-1">Edit</a>
+                <a asp-controller="Event" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger d-flex justify-content-center align-items-center flex-fill mx-1" onclick="return confirm('Are you sure you want to delete this product?');">Delete</a>
+                }
+            </div>
+        </div>
+    </div>
+</div>
