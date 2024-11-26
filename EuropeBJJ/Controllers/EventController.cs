@@ -264,5 +264,29 @@ namespace EuropeBJJ.Controllers
 
             return this.RedirectToAction("Pinned");
         }
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveFromPinned(int id)
+        {
+            string currentUserId = GetCurrentUserId() ?? string.Empty;
+
+            Event? entity = await dbContext.Events.Where(e => e.Id == id).Include(e => e.EventAccounts).FirstOrDefaultAsync();
+
+            EventAccount? eventAccount = entity.EventAccounts.FirstOrDefault(ea => ea.AccountId == currentUserId);
+
+            if (entity == null || entity.IsRemoved)
+            {
+                throw new ArgumentException("Invalid id");
+            }
+
+            if (eventAccount != null)
+            {
+                entity.EventAccounts.Remove(eventAccount);
+
+                await dbContext.SaveChangesAsync();
+            }
+
+            return this.RedirectToAction("Pinned");
+        }
     }
 }
