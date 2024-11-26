@@ -289,5 +289,74 @@ namespace EuropeBJJ.Controllers
 
             return this.RedirectToAction("Pinned");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> TournamentDetails(int id)
+        {
+            string currentUserId = GetCurrentUserId() ?? string.Empty;
+
+            var model = await dbContext.Events.Where(e => e.Id == id).Where(e => e.IsRemoved == false).AsNoTracking().Select(e => new TournamentViewModel
+            {                
+                Image = e.Image,
+                Name = e.Name,
+                Country = e.Country,
+                City = e.City,
+                Link = e.Link
+            }).FirstOrDefaultAsync();
+
+
+            return this.View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> OpenMatDetails(int id)
+        {
+            string currentUserId = GetCurrentUserId() ?? string.Empty;
+
+            var model = await dbContext.Events.Where(e => e.Id == id).Where(e => e.IsRemoved == false).AsNoTracking().Select(e => new AddOpenMatViewModel
+            {
+                
+                Image = e.Image,
+                Name = e.Name,
+                Country = e.Country,
+                City = e.City,
+                Date = e.Date.ToString(DateFormat),
+                Description = e.Description,
+                Location = e.Location,
+                Organiser = e.Organiser,
+                MembersPrice = e.MembersPrice,
+                NonMembersPrice = e.NonMembersPrice
+            }).FirstOrDefaultAsync();
+
+
+            return this.View(model);
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> SeminarDetails(int id)
+        {
+            string currentUserId = GetCurrentUserId() ?? string.Empty;
+
+            var model = await dbContext.Events.Where(e => e.Id == id).Where(e => e.IsRemoved == false).AsNoTracking().Select(e => new AddSeminarViewModel
+            {
+                Image = e.Image,
+                Name = e.Name,
+                Country = e.Country,
+                City = e.City,
+                Date = e.Date.ToString(DateFormat),
+                Description = e.Description,
+                Location = e.Location,
+                Organiser = e.Organiser,
+                MembersPrice = e.MembersPrice,
+                NonMembersPrice = e.NonMembersPrice,
+                Teacher = e.Teacher
+            }).FirstOrDefaultAsync();
+
+
+            return this.View(model);
+        }
     }
+
+
 }
