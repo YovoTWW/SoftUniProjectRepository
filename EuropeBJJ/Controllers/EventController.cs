@@ -7,6 +7,7 @@ using EuropeBJJ.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.CodeAnalysis;
 using System.Globalization;
+using Microsoft.IdentityModel.Abstractions;
 
 namespace EuropeBJJ.Controllers
 {
@@ -313,6 +314,7 @@ namespace EuropeBJJ.Controllers
                 City = e.City,
                 Link = e.Link,
                 IsPinned = e.EventAccounts.Any(ea => ea.AccountId == currentUserId),
+                Date = e.Date.ToString(DateFormat),
                 Creator = e.Account.UserName ?? string.Empty
             }).FirstOrDefaultAsync();
 
@@ -372,8 +374,93 @@ namespace EuropeBJJ.Controllers
             return this.View(model);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            
+            var model = await dbContext.Events.Where(e => e.Id == id).Where(e => e.IsRemoved == false).AsNoTracking().Select(e => new EventEditViewModel
+            {                
+                Image = e.Image,
+                Name = e.Name,
+                Country = e.Country,
+                City = e.City,
+                Date = e.Date.ToString(DateFormat),
+                Description = e.Description ?? string.Empty,
+                Location = e.Location ?? string.Empty,
+                Organiser = e.Organiser ?? string.Empty,
+                MembersPrice = e.MembersPrice ?? 0m,
+                NonMembersPrice = e.NonMembersPrice ?? 0m,
+                Teacher = e.Teacher ?? string.Empty,                
+                Creator = e.Account.UserName ?? string.Empty,
+                Link = e.Link ?? string.Empty ,
+                EventType = e.Discriminator,
+                AccountId = GetCurrentUserId() ?? string.Empty
+        }).FirstOrDefaultAsync();
 
-     
+            return this.View(model);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(EventEditViewModel model, int id)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                throw new ArgumentException("Invalid Model State");
+            }
+
+            bool validDate= DateTime.TryParseExact(model.Date, DateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime date);
+
+            if (!validDate)
+            {
+                ModelState.AddModelError(nameof(model.Date), "Invalid date format");               
+                return this.View(model);
+            }
+
+            
+
+            Event? entity = await dbContext.Events.FindAsync(id);
+
+            if (entity == null || entity.IsRemoved)
+            {
+                throw new ArgumentException("Invalid id");
+            }
+            string currentUserId = GetCurrentUserId() ?? string.Empty;
+
+            if (entity.AccountId != currentUserId)
+            {
+                return RedirectToAction("Index","Home");
+            }
+
+            entity.Name = model.Name;
+            entity.Country = model.Country;
+            entity.City = model.City;
+            entity.Date = date;
+            entity.AccountId = GetCurrentUserId() ?? string.Empty;
+
+            if (model.EventType == "Tournament")
+            {
+                entity.Link = model.Link;
+            }
+
+            if(model.EventType=="OpenMat" || model.EventType=="Seminar")
+            {
+                entity.Organiser = model.Organiser;
+                entity.MembersPrice = model.MembersPrice;
+                entity.NonMembersPrice = model.NonMembersPrice;
+                entity.Description = model.Description;
+
+                if(model.EventType=="Seminar")
+                {
+                    entity.Teacher = model.Teacher;
+                }
+            }
+
+            await this.dbContext.SaveChangesAsync();
+
+            return RedirectToAction("Index", "Home");
+        }
+
     }
 
 
