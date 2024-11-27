@@ -36,5 +36,9 @@ namespace EuropeBJJ.Models
         [MinLength(MinDescriptionLength)]
         [MaxLength(MaxDescriptionLength)]
         public string Description { get; set; } = null!;
+
+        public bool IsPinned { get; set; }
+
+        public string? Creator { get; set; }
     }
 }

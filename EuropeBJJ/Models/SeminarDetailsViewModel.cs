@@ -40,5 +40,9 @@ namespace EuropeBJJ.Models
         [MinLength(MinNameLength)]
         [MaxLength(MaxNameLength)]
         public string Teacher { get; set; } = null!;
+
+        public bool IsPinned { get; set; }
+
+        public string? Creator { get; set; }
     }
 }

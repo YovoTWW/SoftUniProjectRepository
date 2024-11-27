@@ -34,7 +34,7 @@
                     <p class="card-text">Location: @tournament.City , @tournament.Country</p>
                     <p class="card-text">Link: @tournament.Link</p>
                      <div class="d-flex justify-content-between mt-auto">
-                        @if (User?.Identity?.IsAuthenticated == true )
+                        @if (User?.Identity?.IsAuthenticated == true && !tournament.IsPinned)
                         {
                             <a asp-controller="Event" asp-action="TournamentDetails" asp-route-id="@tournament.Id" class="btn btn-info me-2 w-50">Details</a>
                             <form asp-controller="Event" asp-action="AddToPinned" method="post" class="w-50">

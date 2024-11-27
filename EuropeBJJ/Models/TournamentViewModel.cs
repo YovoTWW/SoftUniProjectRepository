@@ -14,5 +14,9 @@
         public string? Image {  get; set; } 
 
         public string? Link { get; set; }
+
+        public bool IsPinned { get; set; }
+
+        public string? Creator {  get; set; }
     }
 }

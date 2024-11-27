@@ -32,7 +32,7 @@
                     <p class="card-text">Location: @openMat.City , @openMat.Country</p>
                     <p class="card-text">Exact Location: @openMat.Location</p>
                     <div class="d-flex justify-content-between mt-auto">
-                        @if (User?.Identity?.IsAuthenticated == true)
+                        @if (User?.Identity?.IsAuthenticated == true && !openMat.IsPinned)
                         {
                             <a asp-controller="Event" asp-action="OpenMatDetails" asp-route-id="@openMat.Id" class="btn btn-info me-2 w-50">Details</a>
                             <form asp-controller="Event" asp-action="AddToPinned" method="post" class="w-50">

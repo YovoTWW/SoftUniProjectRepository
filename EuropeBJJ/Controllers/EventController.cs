@@ -28,6 +28,8 @@ namespace EuropeBJJ.Controllers
         [HttpGet]
         public async Task<IActionResult> TournamentIndex()
         {
+            string currentUserId = GetCurrentUserId() ?? string.Empty;
+
             var model = await dbContext.Events.OfType<Tournament>().Select(e => new TournamentViewModel()
             {
                 Id = e.Id,
@@ -36,6 +38,7 @@ namespace EuropeBJJ.Controllers
                 Country = e.Country,
                 City = e.City,
                 Link = e.Link,
+                IsPinned = e.EventAccounts.Any(ea=>ea.AccountId==currentUserId)
             }).ToListAsync();
 
             return this.View(model);
@@ -44,15 +47,18 @@ namespace EuropeBJJ.Controllers
         [HttpGet]
         public async Task<IActionResult> OpenMatIndex()
         {
+            string currentUserId = GetCurrentUserId() ?? string.Empty;
+
             var model =  await dbContext.Events.OfType<OpenMat>().Select(e => new OpenMatViewModel()      
-        {
+            {
                 Id = e.Id,
                 Image = e.Image,
                 Name = e.Name,
                 Country = e.Country,
                 City = e.City,
                 Date = e.Date.ToString(DateFormat),
-                Location = e.Location              
+                Location = e.Location ,
+                IsPinned = e.EventAccounts.Any(ea => ea.AccountId == currentUserId)
             }).ToListAsync();
 
           
@@ -63,6 +69,8 @@ namespace EuropeBJJ.Controllers
         [HttpGet]
         public async Task<IActionResult> SeminarIndex()
         {
+            string currentUserId = GetCurrentUserId() ?? string.Empty;
+
             var model = await dbContext.Events.OfType<Seminar>().Select(e => new SeminarViewModel()
             {
                 Id = e.Id,
@@ -72,7 +80,8 @@ namespace EuropeBJJ.Controllers
                 City = e.City,
                 Date = e.Date.ToString(DateFormat),
                 Location = e.Location,
-                Teacher = e.Teacher
+                Teacher = e.Teacher,
+                IsPinned = e.EventAccounts.Any(ea => ea.AccountId == currentUserId)
             }).ToListAsync();
 
             return this.View(model);
@@ -302,7 +311,9 @@ namespace EuropeBJJ.Controllers
                 Name = e.Name,
                 Country = e.Country,
                 City = e.City,
-                Link = e.Link
+                Link = e.Link,
+                IsPinned = e.EventAccounts.Any(ea => ea.AccountId == currentUserId),
+                Creator = e.Account.UserName ?? string.Empty
             }).FirstOrDefaultAsync();
 
 
@@ -326,7 +337,9 @@ namespace EuropeBJJ.Controllers
                 Location = e.Location,
                 Organiser = e.Organiser,
                 MembersPrice = e.MembersPrice ?? 0m,
-                NonMembersPrice = e.NonMembersPrice ?? 0m
+                NonMembersPrice = e.NonMembersPrice ?? 0m,
+                IsPinned = e.EventAccounts.Any(ea => ea.AccountId == currentUserId),
+                Creator = e.Account.UserName ?? string.Empty
             }).FirstOrDefaultAsync();
 
             return this.View(model);
@@ -351,13 +364,16 @@ namespace EuropeBJJ.Controllers
                 Organiser = e.Organiser,
                 MembersPrice = e.MembersPrice ?? 0m,
                 NonMembersPrice = e.NonMembersPrice ?? 0m,
-                Teacher = e.Teacher
+                Teacher = e.Teacher,
+                IsPinned = e.EventAccounts.Any(ea => ea.AccountId == currentUserId),
+                Creator = e.Account.UserName ?? string.Empty
             }).FirstOrDefaultAsync();
 
             return this.View(model);
         }
 
 
+     
     }
 
 

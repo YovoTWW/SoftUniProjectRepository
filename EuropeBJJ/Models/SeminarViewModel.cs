@@ -17,5 +17,6 @@
 
         public string Teacher { get; set; } = null!;
 
+        public bool IsPinned { get; set; }
     }
 }

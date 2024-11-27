@@ -14,6 +14,8 @@ namespace EuropeBJJ.Models
 
         public string? Image { get; set; } 
       
-        public string Location { get; set; } = null!;   
+        public string Location { get; set; } = null!; 
+        
+        public bool IsPinned { get; set; }
     }
 }
