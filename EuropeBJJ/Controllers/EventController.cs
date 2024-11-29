@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.CodeAnalysis;
 using System.Globalization;
 using Microsoft.IdentityModel.Abstractions;
+using Microsoft.Identity.Client;
 
 namespace EuropeBJJ.Controllers
 {
@@ -31,7 +32,7 @@ namespace EuropeBJJ.Controllers
         {
             string currentUserId = GetCurrentUserId() ?? string.Empty;
 
-            var model = await dbContext.Events.OfType<Tournament>().Select(e => new TournamentViewModel()
+            var model = await dbContext.Events.OfType<Tournament>().Where(e => e.IsRemoved == false).Select(e => new TournamentViewModel()
             {
                 Id = e.Id,
                 Image = e.Image,
@@ -50,7 +51,7 @@ namespace EuropeBJJ.Controllers
         {
             string currentUserId = GetCurrentUserId() ?? string.Empty;
 
-            var model =  await dbContext.Events.OfType<OpenMat>().Select(e => new OpenMatViewModel()      
+            var model =  await dbContext.Events.OfType<OpenMat>().Where(e=>e.IsRemoved==false).Select(e => new OpenMatViewModel()      
             {
                 Id = e.Id,
                 Image = e.Image,
@@ -72,7 +73,7 @@ namespace EuropeBJJ.Controllers
         {
             string currentUserId = GetCurrentUserId() ?? string.Empty;
 
-            var model = await dbContext.Events.OfType<Seminar>().Select(e => new SeminarViewModel()
+            var model = await dbContext.Events.OfType<Seminar>().Where(e => e.IsRemoved == false).Select(e => new SeminarViewModel()
             {
                 Id = e.Id,
                 Image = e.Image,
@@ -415,6 +416,35 @@ namespace EuropeBJJ.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var model = await dbContext.Events.Where(e => e.Id == id).Where(e => e.IsRemoved == false).AsNoTracking().Select(e => new DeleteViewModel
+            {
+                Id = e.Id,
+                Name = e.Name,
+                Account = e.Account.UserName ?? string.Empty,
+                AccountId = e.AccountId
+            }).FirstOrDefaultAsync();
+
+            return this.View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(DeleteViewModel model)
+        {
+            Event? Event = await dbContext.Events.Where(e => e.Id == model.Id).Where(e => e.IsRemoved == false).FirstOrDefaultAsync();
+
+            if (Event != null)
+            {
+
+                Event.IsRemoved = true;
+
+                await dbContext.SaveChangesAsync();
+            }
+
+            return RedirectToAction("Index","Home");
+        }
     }
 
 
