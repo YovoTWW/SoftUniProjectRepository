@@ -28,11 +28,11 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Events</a>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" asp-controller="Event" asp-action="TournamentIndex">Tournaments</a>
+                                <a class="dropdown-item" asp-controller="Tournament" asp-action="Index">Tournaments</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" asp-controller="Event" asp-action="OpenMatIndex">Open Mats</a>
+                                <a class="dropdown-item" asp-controller="OpenMat" asp-action="Index">Open Mats</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" asp-controller="Event" asp-action="SeminarIndex">Seminars</a>                               
+                                <a class="dropdown-item" asp-controller="Seminar" asp-action="Index">Seminars</a>                               
                             </div>
                         </li>
                         @if (User?.Identity?.IsAuthenticated ?? false)
