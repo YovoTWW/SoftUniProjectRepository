@@ -301,33 +301,11 @@ namespace EuropeBJJ.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> TournamentDetails(int id)
+        public async Task<IActionResult> Details(int id)
         {
             string currentUserId = GetCurrentUserId() ?? string.Empty;
 
-            var model = await dbContext.Events.Where(e => e.Id == id).Where(e => e.IsRemoved == false).AsNoTracking().Select(e => new TournamentViewModel
-            {            
-                Id = e.Id,
-                Image = e.Image,
-                Name = e.Name,
-                Country = e.Country,
-                City = e.City,
-                Link = e.Link,
-                IsPinned = e.EventAccounts.Any(ea => ea.AccountId == currentUserId),
-                Date = e.Date.ToString(DateFormat),
-                Creator = e.Account.UserName ?? string.Empty
-            }).FirstOrDefaultAsync();
-
-
-            return this.View(model);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> OpenMatDetails(int id)
-        {
-            string currentUserId = GetCurrentUserId() ?? string.Empty;
-
-            var model = await dbContext.Events.Where(e => e.Id == id).Where(e => e.IsRemoved == false).AsNoTracking().Select(e => new OpenMatDetailsViewModel
+            var model = await dbContext.Events.Where(e => e.Id == id).Where(e => e.IsRemoved == false).AsNoTracking().Select(e => new EventDetailsViewModel
             {
                 Id = e.Id,
                 Image = e.Image,
@@ -335,40 +313,16 @@ namespace EuropeBJJ.Controllers
                 Country = e.Country,
                 City = e.City,
                 Date = e.Date.ToString(DateFormat),
-                Description = e.Description,
-                Location = e.Location,
-                Organiser = e.Organiser,
+                Description = e.Description ?? string.Empty,
+                Location = e.Location ?? string.Empty,
+                Organiser = e.Organiser ?? string.Empty,
                 MembersPrice = e.MembersPrice ?? 0m,
                 NonMembersPrice = e.NonMembersPrice ?? 0m,
+                Teacher = e.Teacher ?? string.Empty,
                 IsPinned = e.EventAccounts.Any(ea => ea.AccountId == currentUserId),
-                Creator = e.Account.UserName ?? string.Empty
-            }).FirstOrDefaultAsync();
-
-            return this.View(model);
-        }
-
-
-        [HttpGet]
-        public async Task<IActionResult> SeminarDetails(int id)
-        {
-            string currentUserId = GetCurrentUserId() ?? string.Empty;
-
-            var model = await dbContext.Events.Where(e => e.Id == id).Where(e => e.IsRemoved == false).AsNoTracking().Select(e => new SeminarDetailsViewModel
-            {
-                Id = e.Id,
-                Image = e.Image,
-                Name = e.Name,
-                Country = e.Country,
-                City = e.City,
-                Date = e.Date.ToString(DateFormat),
-                Description = e.Description,
-                Location = e.Location,
-                Organiser = e.Organiser,
-                MembersPrice = e.MembersPrice ?? 0m,
-                NonMembersPrice = e.NonMembersPrice ?? 0m,
-                Teacher = e.Teacher,
-                IsPinned = e.EventAccounts.Any(ea => ea.AccountId == currentUserId),
-                Creator = e.Account.UserName ?? string.Empty
+                Creator = e.Account.UserName ?? string.Empty,
+                Link = e.Link ?? string.Empty,
+                EventType = e.Discriminator
             }).FirstOrDefaultAsync();
 
             return this.View(model);
