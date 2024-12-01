@@ -1,6 +1,7 @@
 using EuropeBJJ.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 
 namespace EuropeBJJ
 {
@@ -22,10 +23,13 @@ namespace EuropeBJJ
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;
             })
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddControllersWithViews();
 
             var app = builder.Build();
+
+            
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -52,7 +56,27 @@ namespace EuropeBJJ
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();
 
-            app.Run();
+            static async Task InitializeRoleAsync(IServiceProvider serviceProvider)
+            {
+                using (var scope = serviceProvider.CreateScope())
+                {
+                    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+                    string[] roles = { "Administrator", "User" };
+
+                    foreach (string role in roles)
+                    {
+                        if (!await roleManager.RoleExistsAsync(role))
+                        {
+                            await roleManager.CreateAsync(new IdentityRole(role));
+                        }
+                    }
+                }
+            }
+
+             InitializeRoleAsync(app.Services);
+
+                app.Run();
         }
     }
 }
