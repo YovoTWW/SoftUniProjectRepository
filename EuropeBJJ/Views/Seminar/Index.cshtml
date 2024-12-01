@@ -8,7 +8,7 @@
     <h2>@ViewData["Title"]</h2>
     @if (User?.Identity?.IsAuthenticated == true)
     {
-        <a asp-controller="Seminar" asp-action="Add" class="btn btn-primary"><i class="fas fa-plus"></i>Add Seminar</a>
+        <a asp-controller="Seminar" asp-action="Add" class="btn btn-primary"><i class="bi bi-plus-circle"></i>Add Seminar</a>
     }
 </div>
 <hr />
@@ -35,15 +35,15 @@
                     <div class="d-flex justify-content-between mt-auto">
                         @if (User?.Identity?.IsAuthenticated == true && !Seminar.IsPinned)
                         {
-                            <a asp-controller="Event" asp-action="Details" asp-route-id="@Seminar.Id" class="btn btn-info me-2 w-50">Details</a>
+                            <a asp-controller="Event" asp-action="Details" asp-route-id="@Seminar.Id" class="btn btn-info me-2 w-50"><i class="bi bi-card-text"></i>Details</a>
                             <form asp-controller="Event" asp-action="AddToPinned" method="post" class="w-50">
                                 <input type="hidden" name="id" value="@Seminar.Id" />
-                                <button type="submit" class="btn btn-success w-100">Pin</button>
+                                <button type="submit" class="btn btn-success w-100"><i class="bi bi-pin"></i>Pin</button>
                             </form>
                         }
                         else
                         {
-                            <a asp-controller="Event" asp-action="Details" asp-route-id="@Seminar.Id" class="btn btn-info w-100">Details</a>
+                            <a asp-controller="Event" asp-action="Details" asp-route-id="@Seminar.Id" class="btn btn-info w-100"><i class="bi bi-card-text"></i>Details</a>
                         }
                     </div>
                 </div>
