@@ -7,7 +7,7 @@ namespace EuropeBJJ
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -56,9 +56,8 @@ namespace EuropeBJJ
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();
 
-            static async Task InitializeRoleAsync(IServiceProvider serviceProvider)
-            {
-                using (var scope = serviceProvider.CreateScope())
+           
+                using (var scope = app.Services.CreateScope())
                 {
                     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
@@ -72,11 +71,33 @@ namespace EuropeBJJ
                         }
                     }
                 }
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+
+                string email = "yovo@gmail.com";
+
+                var admin = await userManager.FindByEmailAsync(email);
+
+                if (!await userManager.IsInRoleAsync(admin, "Administrator"))
+                {
+                    await userManager.AddToRoleAsync(admin, "Administrator");
+                }
+
+                var users = await userManager.Users.Where(u=>u.Email!=email).ToListAsync();
+
+                foreach (var user in users)
+                {
+                    if (!await userManager.IsInRoleAsync(user, "User"))
+                    {
+                        await userManager.AddToRoleAsync(user, "User");
+                    }
+                }
             }
 
-             InitializeRoleAsync(app.Services);
 
-                app.Run();
+            app.Run();
         }
     }
 }
