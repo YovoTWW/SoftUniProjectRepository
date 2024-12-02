@@ -78,20 +78,23 @@ namespace EuropeBJJ
 
                 string email = "yovo@gmail.com";
 
-                var admin = await userManager.FindByEmailAsync(email);
-
-                if (!await userManager.IsInRoleAsync(admin, "Administrator"))
-                {
-                    await userManager.AddToRoleAsync(admin, "Administrator");
-                }
-
-                var users = await userManager.Users.Where(u=>u.Email!=email).ToListAsync();
+                var users = await userManager.Users.ToListAsync();
 
                 foreach (var user in users)
                 {
-                    if (!await userManager.IsInRoleAsync(user, "User"))
+                    if (user.Email == email)
                     {
-                        await userManager.AddToRoleAsync(user, "User");
+                        if (!await userManager.IsInRoleAsync(user, "Administrator"))
+                        {
+                            await userManager.AddToRoleAsync(user, "Administrator");
+                        }
+                    }
+                    else
+                    {
+                        if (!await userManager.IsInRoleAsync(user, "User"))
+                        {
+                            await userManager.AddToRoleAsync(user, "User");
+                        }
                     }
                 }
             }
