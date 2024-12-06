@@ -29,7 +29,7 @@ namespace EuropeBJJ.Controllers
                            
         [HttpGet]
 
-        public async Task<IActionResult> Pinned(string searchTextName,string searchTextCountry)
+        public async Task<IActionResult> Pinned(string searchTextName/*,string searchTextCountry*/)
         {
             string currentUserId = GetCurrentUserId() ?? string.Empty;
 
@@ -49,18 +49,19 @@ namespace EuropeBJJ.Controllers
                     EventType = e.Discriminator
                 }).AsNoTracking().ToListAsync();
 
-            if (!string.IsNullOrWhiteSpace(searchTextCountry))
+            /*if (!string.IsNullOrWhiteSpace(searchTextCountry))
             {
                 // searchTextName = string.Empty;
                 ViewData["SearchTextName"] = string.Empty;
                 model = model.Where(e => e.Country.Contains(searchTextCountry, StringComparison.OrdinalIgnoreCase)).ToList();
-            }
+            }*/
 
             if (!string.IsNullOrWhiteSpace(searchTextName))
             {
                 // searchTextCountry = string.Empty;
-                ViewData["SearchTextCountry"] = string.Empty;
+               // ViewData["SearchTextCountry"] = string.Empty;
                  model =  model.Where(e => e.Name.Contains(searchTextName, StringComparison.OrdinalIgnoreCase)).ToList();
+                
             }
 
            
