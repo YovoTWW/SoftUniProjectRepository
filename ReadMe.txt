@@ -1,0 +1,1 @@
+При миграциите за свързващите таблици (EventsAccounts), onDelete: ReferentialAction.Cascade трябва да се смени на NoAction ръчно.
