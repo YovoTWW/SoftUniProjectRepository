@@ -28,9 +28,14 @@ namespace EuropeBJJ.Controllers
 
                            
         [HttpGet]
-        public async Task<IActionResult> Pinned()
+
+        public async Task<IActionResult> Pinned(string searchTextName,string searchTextCountry)
         {
             string currentUserId = GetCurrentUserId() ?? string.Empty;
+
+            ViewData["SearchTextName"] = searchTextName;
+            ViewData["SearchTextCountry"] = searchTextName;
+
 
             var model = await dbContext.Events.Where(e => e.IsRemoved == false).Where(e => e.EventAccounts.Any(ea => ea.AccountId == currentUserId))
                 .Select(e => new EventGeneralisedViewModel()
@@ -43,6 +48,22 @@ namespace EuropeBJJ.Controllers
                     Image = e.Image,
                     EventType = e.Discriminator
                 }).AsNoTracking().ToListAsync();
+
+            if (!string.IsNullOrWhiteSpace(searchTextCountry))
+            {
+                // searchTextName = string.Empty;
+                ViewData["SearchTextName"] = string.Empty;
+                model = model.Where(e => e.Country.Contains(searchTextCountry, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchTextName))
+            {
+                // searchTextCountry = string.Empty;
+                ViewData["SearchTextCountry"] = string.Empty;
+                 model =  model.Where(e => e.Name.Contains(searchTextName, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+           
 
             return this.View(model);
         }
