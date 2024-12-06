@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using static EuropeBJJ.Constants.ModelConstants;
+using static EuropeBJJ.Constants.CountriesList;
 
 namespace EuropeBJJ.Models
 {
@@ -43,7 +44,9 @@ namespace EuropeBJJ.Models
 
         [MinLength(MinNameLength, ErrorMessage = "Teacher Name cant be less than 5 characters long")]
         [MaxLength(MaxNameLength, ErrorMessage = "Teacher Name cant be more than 50 characters long")]
-        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Teacher Name can only include latin letters")]
+        [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Teacher Name can only include latin letters")]
         public string Teacher { get; set; } = null!;
+
+        public List<string> Countries = ListOfCountries;
     }
 }

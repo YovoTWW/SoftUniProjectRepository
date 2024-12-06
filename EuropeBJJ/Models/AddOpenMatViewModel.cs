@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using static EuropeBJJ.Constants.ModelConstants;
+using static EuropeBJJ.Constants.CountriesList;
 
 namespace EuropeBJJ.Models
 {
@@ -40,5 +41,7 @@ namespace EuropeBJJ.Models
         [MinLength(MinDescriptionLength, ErrorMessage = "Description text cant be less than 10 characters long")]
         [MaxLength(MaxDescriptionLength, ErrorMessage = "Description text cant be more than 250 characters long")]
         public string Description { get; set; } = null!;
+
+        public List<string> Countries = ListOfCountries;
     }
 }

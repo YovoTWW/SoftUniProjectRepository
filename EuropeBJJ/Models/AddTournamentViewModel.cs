@@ -12,6 +12,7 @@ namespace EuropeBJJ.Models
 
         //[MaxLength(MaxNameLength, ErrorMessage = "Country Name cant be more than 50 characters long")]
         //[RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Country name can only include latin letters")]
+        
         public string Country { get; set; } = null!;
 
         [MaxLength(MaxNameLength)]
