@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis;
 using System.Globalization;
 using Microsoft.IdentityModel.Abstractions;
 using Microsoft.Identity.Client;
+using EuropeBJJ.Constants;
 
 namespace EuropeBJJ.Controllers
 {
@@ -29,12 +30,13 @@ namespace EuropeBJJ.Controllers
                            
         [HttpGet]
 
-        public async Task<IActionResult> Pinned(string searchTextName/*,string searchTextCountry*/)
+        public async Task<IActionResult> Pinned(string searchTextName,string filterCountry)
         {
             string currentUserId = GetCurrentUserId() ?? string.Empty;
 
             ViewData["SearchTextName"] = searchTextName;
-            ViewData["SearchTextCountry"] = searchTextName;
+            ViewData["FilterCountry"] = filterCountry;
+            ViewData["Countries"] = CountriesList.ListOfCountries;
 
 
             var model = await dbContext.Events.Where(e => e.IsRemoved == false).Where(e => e.EventAccounts.Any(ea => ea.AccountId == currentUserId))
@@ -49,23 +51,19 @@ namespace EuropeBJJ.Controllers
                     EventType = e.Discriminator
                 }).AsNoTracking().ToListAsync();
 
-            /*if (!string.IsNullOrWhiteSpace(searchTextCountry))
-            {
-                // searchTextName = string.Empty;
-                ViewData["SearchTextName"] = string.Empty;
-                model = model.Where(e => e.Country.Contains(searchTextCountry, StringComparison.OrdinalIgnoreCase)).ToList();
-            }*/
+            
 
             if (!string.IsNullOrWhiteSpace(searchTextName))
             {
-                // searchTextCountry = string.Empty;
-               // ViewData["SearchTextCountry"] = string.Empty;
-                 model =  model.Where(e => e.Name.Contains(searchTextName, StringComparison.OrdinalIgnoreCase)).ToList();
-                
+                 model =  model.Where(e => e.Name.Contains(searchTextName, StringComparison.OrdinalIgnoreCase)).ToList();                
             }
 
-           
+            if(!string.IsNullOrEmpty(filterCountry))
+            {
+                model = model.Where(e => e.Country==filterCountry).ToList();
+            }
 
+          
             return this.View(model);
         }
 

@@ -1,4 +1,6 @@
-﻿namespace EuropeBJJ.Models
+﻿using static EuropeBJJ.Constants.CountriesList;
+
+namespace EuropeBJJ.Models
 {
     public class EventGeneralisedViewModel
     {
@@ -14,5 +16,7 @@
         public string? Image { get; set; }
 
         public string EventType {  get; set; } = null!;
+
+        //public List<string> Countries = ListOfCountries;
     }
 }

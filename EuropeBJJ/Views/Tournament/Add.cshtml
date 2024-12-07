@@ -43,7 +43,7 @@
                         <option value="">Select a Country</option>
                         @foreach (var country in Model.Countries)
                         {
-                            <option value="@country" (Model.Country = country>@country</option>
+                            <option value="@country" Model.Country = country>@country</option>
                         }
                     </select>
                     <span asp-validation-for="Country" class="text-danger"></span>
