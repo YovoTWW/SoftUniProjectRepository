@@ -1,4 +1,5 @@
-﻿using EuropeBJJ.Data;
+﻿using EuropeBJJ.Constants;
+using EuropeBJJ.Data;
 using EuropeBJJ.Data.Models;
 using EuropeBJJ.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -26,9 +27,13 @@ namespace EuropeBJJ.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchTextName , string filterCountry)
         {
             string currentUserId = GetCurrentUserId() ?? string.Empty;
+
+            ViewData["SearchTextName"] = searchTextName;
+            ViewData["FilterCountry"] = filterCountry;
+            ViewData["Countries"] = CountriesList.ListOfCountries;
 
             var model = await dbContext.Events.OfType<Tournament>().Where(e => e.IsRemoved == false).Select(e => new TournamentViewModel()
             {
@@ -40,6 +45,16 @@ namespace EuropeBJJ.Controllers
                 Link = e.Link,
                 IsPinned = e.EventAccounts.Any(ea => ea.AccountId == currentUserId)
             }).ToListAsync();
+
+            if (!string.IsNullOrWhiteSpace(searchTextName))
+            {
+                model = model.Where(e => e.Name.Contains(searchTextName, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+            if (!string.IsNullOrEmpty(filterCountry))
+            {
+                model = model.Where(e => e.Country == filterCountry).ToList();
+            }
 
             return this.View(model);
         }
