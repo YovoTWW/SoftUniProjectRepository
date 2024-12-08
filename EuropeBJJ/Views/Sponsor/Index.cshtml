@@ -1,0 +1,24 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@inject UserManager<IdentityUser> UserManager
+
+@model IEnumerable<SponsorViewModel>
+
+@{
+    ViewData["Title"] = "Sponsors";
+}
+
+<h1>List of Sponsors</h1>
+
+<div style="display: flex; flex-direction: column; gap: 20px; margin-top: 20px;">
+@foreach(var sponsor in Model)
+{
+    <h5>@sponsor.Name</h5>  
+        <a href="@sponsor.Link" target="_blank"
+           style="display: block; border: 2px solid black;
+                  text-align: center; width: 1200px ; height: 300px;
+                  overflow: hidden; margin: 0 auto; position: relative;">
+            <img src="@sponsor.Image"
+                 style="width: 100%; height: 100%; object-fit: contain; position: absolute; top: 0; left: 0;">
+        </a>
+}
+</div>

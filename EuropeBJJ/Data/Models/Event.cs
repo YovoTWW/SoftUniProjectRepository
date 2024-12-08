@@ -45,7 +45,7 @@ namespace EuropeBJJ.Data.Models
 
 
         [MaxLength(MaxDescriptionLength)]
-        public string? Description { get; set; } = null!;
+        public string? Description { get; set; }
      
         public string? AccountId { get; set; }
 

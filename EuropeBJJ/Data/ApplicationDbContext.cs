@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using EuropeBJJ.Data.Models;
 using System.Reflection.Emit;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace EuropeBJJ.Data
 {
@@ -31,11 +32,20 @@ namespace EuropeBJJ.Data
                 new Tournament { Id=3,Name = "AJP TOUR BULGARIA NATIONAL JIU-JITSU CHAMPIONSHIP 2024 - GI & NO-GI", Country = "Bulgaria", City = "Sofia", Date = DateTime.Now, Link = "https://ajptour.com/en/event/1104", Image = "https://ajptour.com/build/webpack/img/ajp/fallback.a01f59147724b9274315365bd75f5b21.jpg" },
                 new Tournament { Id=4,Name = "Lisbon International Open IBJJF Jiu-Jitsu Championship 2024", Country = "Portugal", City = "Lisbon", Date = DateTime.Now, Link = "https://ibjjf.com/events/lisbon-international-open-ibjjf-jiu-jitsu-championship-2024", Image = "https://ibjjf.com/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBam9hIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--17bf4a00266e5788a79c44d985d0b399c0ab0bec/lisbon-2024-logo-website-white%20(1).png" },
                 new Tournament { Id = 14, Name = "SJJIFBF Sofia Winter Open 2025 Gi & No-Gi ", Country = "Bulgaria", City = "Sofia", Date = DateTime.Now, Link = "https://sjjif.smoothcomp.com/en/event/20819", Image = "https://smoothcomp.com/pictures/t/5170482-d6y7/sjjifbf-sofia-winter-open-2025-gi-no-gi.jpg" });
-        }
+
+            builder.Entity<Sponsor>().
+                    HasData(
+                    new Sponsor { Id = 1, Name = "Born Winner", Image = "/img/BornWinner.jpg", Link = "https://www.bornwinner.bg" },
+                    new Sponsor { Id = 2, Name = "Ground Game", Image = "/img/groundgame.jpg", Link = "https://groundgame.com/" },
+                    new Sponsor { Id = 3, Name = "FUJI Mats", Image = "/img/FUJI_Mats.jpg", Link = "https://fujimats.com/" }
+                    );
+                }
 
         public DbSet<Event> Events { get; set; }
 
         public DbSet<EventAccount> EventsAccounts { get; set; }
+
+        public DbSet<Sponsor> Sponsors { get; set;}
 
     }
 }
