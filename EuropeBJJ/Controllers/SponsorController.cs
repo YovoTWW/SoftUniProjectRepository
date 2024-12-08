@@ -23,6 +23,7 @@ namespace EuropeBJJ.Controllers
 
             var model = await dbContext.Sponsors.Where(s => s.IsRemoved == false).Select(s => new SponsorViewModel()
             {
+                Id = s.Id,
                 Name = s.Name,
                 Image = s.Image,
                 Link = s.Link
