@@ -70,7 +70,7 @@ namespace EuropeBJJ.Controllers
         public async Task<IActionResult> Edit(int id)
         {
 
-            var model = await dbContext.Events.Where(s => s.Id == id).Where(s => s.IsRemoved == false).AsNoTracking().Select(s => new SponsorViewModel
+            var model = await dbContext.Sponsors.Where(s => s.Id == id).Where(s => s.IsRemoved == false).AsNoTracking().Select(s => new SponsorViewModel
             {
                 Name= s.Name,
                 Link = s.Link,
@@ -103,6 +103,34 @@ namespace EuropeBJJ.Controllers
             entity.Image = model.Image;
             
             await this.dbContext.SaveChangesAsync();
+
+            return RedirectToAction("Index", "Sponsor");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var model = await dbContext.Sponsors.Where(s => s.Id == id).Where(s => s.IsRemoved == false).AsNoTracking().Select(e => new SponsorViewModel
+            {
+                Id = e.Id,
+                Name = e.Name,
+            }).FirstOrDefaultAsync();
+
+            return this.View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(SponsorViewModel model)
+        {
+            Sponsor? Sponsor = await dbContext.Sponsors.Where(s => s.Id == model.Id).Where(s => s.IsRemoved == false).FirstOrDefaultAsync();
+
+            if (Sponsor != null)
+            {
+
+                Sponsor.IsRemoved = true;
+
+                await dbContext.SaveChangesAsync();
+            }
 
             return RedirectToAction("Index", "Sponsor");
         }
