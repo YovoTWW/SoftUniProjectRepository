@@ -153,7 +153,7 @@ namespace EuropeBJJ.Controllers
             
             var model = await dbContext.Events.Where(e => e.Id == id).Where(e => e.IsRemoved == false).AsNoTracking().Select(e => new EventEditViewModel
             {                
-                Image = e.Image,
+                Image = e.Image ?? string.Empty,
                 Name = e.Name,
                 Country = e.Country,
                 City = e.City,
@@ -209,21 +209,22 @@ namespace EuropeBJJ.Controllers
             entity.Country = model.Country;
             entity.City = model.City;
             entity.Date = date;
+            entity.Image = model.Image;
             entity.AccountId = GetCurrentUserId() ?? string.Empty;
 
-            if (model.EventType == "Tournament")
+            if (entity.Discriminator == "Tournament")
             {
                 entity.Link = model.Link;
             }
 
-            if(model.EventType=="OpenMat" || model.EventType=="Seminar")
+            if(entity.Discriminator=="OpenMat" || entity.Discriminator=="Seminar")
             {
                 entity.Organiser = model.Organiser;
                 entity.MembersPrice = model.MembersPrice;
                 entity.NonMembersPrice = model.NonMembersPrice;
                 entity.Description = model.Description;
 
-                if(model.EventType=="Seminar")
+                if(entity.Discriminator=="Seminar")
                 {
                     entity.Teacher = model.Teacher;
                 }

@@ -23,12 +23,12 @@ namespace EuropeBJJ.Models
 
         [MinLength(MinNameLength, ErrorMessage = "Organiser Name cant be less than 5 characters long")]
         [MaxLength(MaxNameLength, ErrorMessage = "Organiser Name cant be more than 50 characters long")]
-        public string Organiser { get; set; } = null!;
+        public string? Organiser { get; set; } 
 
 
         [MinLength(MinNameLength, ErrorMessage = "Location Name cant be less than 5 characters long")]
         [MaxLength(MaxNameLength, ErrorMessage = "Location Name cant be more than 50 characters long")]
-        public string Location { get; set; } = null!;
+        public string? Location { get; set; } 
 
         [Range(0.00, double.MaxValue, ErrorMessage = "Price cant be less than 0")]
         public decimal? MembersPrice { get; set; }
@@ -38,12 +38,12 @@ namespace EuropeBJJ.Models
 
         [MinLength(MinDescriptionLength, ErrorMessage = "Description text cant be less than 10 characters long")]
         [MaxLength(MaxDescriptionLength, ErrorMessage = "Description text cant be more than 250 characters long")]
-        public string Description { get; set; } = null!;
+        public string? Description { get; set; } 
 
         [MinLength(MinNameLength, ErrorMessage = "Teacher Name cant be less than 5 characters long")]
         [MaxLength(MaxNameLength, ErrorMessage = "Teacher Name cant be more than 50 characters long")]
-        [RegularExpression(@"^[a-zA-Z/s]+$", ErrorMessage = "Teacher Name can only include latin letters")]
-        public string Teacher { get; set; } = null!;
+        [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Teacher Name can only include latin letters")]
+        public string? Teacher { get; set; } 
 
         public string? Creator { get; set; }
 
