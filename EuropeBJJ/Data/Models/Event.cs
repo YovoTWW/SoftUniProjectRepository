@@ -57,5 +57,7 @@ namespace EuropeBJJ.Data.Models
         public string? Teacher { get; set; }
 
         public List<EventAccount> EventAccounts { get; set; } = new List<EventAccount>();
+
+        public List<EventProfile> Attendees { get; set; } = new List<EventProfile>();
     }
 }

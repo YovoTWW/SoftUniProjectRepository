@@ -47,5 +47,9 @@ namespace EuropeBJJ.Data
 
         public DbSet<Sponsor> Sponsors { get; set;}
 
+        public DbSet<Profile> Profiles { get; set; }
+
+        public DbSet<EventProfile> EventsProfiles { get; set; }
+
     }
 }
