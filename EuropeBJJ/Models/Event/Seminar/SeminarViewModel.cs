@@ -1,7 +1,6 @@
-﻿
-namespace EuropeBJJ.Models
+﻿namespace EuropeBJJ.Models.Event.Seminar
 {
-    public class OpenMatViewModel
+    public class SeminarViewModel
     {
         public int Id { get; set; }
         public string Name { get; set; } = null!;
@@ -12,10 +11,12 @@ namespace EuropeBJJ.Models
 
         public string City { get; set; } = null!;
 
-        public string? Image { get; set; } 
-      
-        public string Location { get; set; } = null!; 
-        
+        public string? Image { get; set; }
+
+        public string Location { get; set; } = null!;
+
+        public string Teacher { get; set; } = null!;
+
         public bool IsPinned { get; set; }
     }
 }

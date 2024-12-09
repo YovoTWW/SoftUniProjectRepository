@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using static EuropeBJJ.Constants.ModelConstants;
 
-namespace EuropeBJJ.Models
+namespace EuropeBJJ.Models.Profile
 {
     public class AddProfileViewModel
     {
@@ -11,7 +11,7 @@ namespace EuropeBJJ.Models
 
         public string Country { get; set; } = null!;
 
-        [Range(0,120,ErrorMessage = "Age must be between 0 and 120 ")]
+        [Range(0, 120, ErrorMessage = "Age must be between 0 and 120 ")]
         public int Age { get; set; }
 
         public string Belt { get; set; } = null!;
@@ -22,5 +22,7 @@ namespace EuropeBJJ.Models
 
         [MaxLength(MaxDescriptionLength, ErrorMessage = "About text cant be more than 250 characters long")]
         public string? AboutText { get; set; }
+
+        public string? Picture { get; set; }
     }
 }

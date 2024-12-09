@@ -1,4 +1,5 @@
-﻿@model IEnumerable<EventGeneralisedViewModel>
+﻿@using EuropeBJJ.Models.Event;
+@model IEnumerable<EventGeneralisedViewModel>
 @{
     ViewData["Title"] = "Pinned Events";
     string searchTextName = ViewData["SearchTextName"] as string ?? string.Empty;

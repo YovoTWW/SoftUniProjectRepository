@@ -22,6 +22,8 @@ namespace EuropeBJJ.Data.Models
         [MaxLength(MaxDescriptionLength)]
         public string? AboutText { get; set; } 
 
+        public string? Picture { get; set; }
+
         public List<EventProfile> EventsAttending { get; set; } = new List<EventProfile>();
 
         public string? AccountId { get; set; }

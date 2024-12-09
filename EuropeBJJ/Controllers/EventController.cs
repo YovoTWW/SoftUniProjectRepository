@@ -10,6 +10,7 @@ using System.Globalization;
 using Microsoft.IdentityModel.Abstractions;
 using Microsoft.Identity.Client;
 using EuropeBJJ.Constants;
+using EuropeBJJ.Models.Event;
 
 namespace EuropeBJJ.Controllers
 {

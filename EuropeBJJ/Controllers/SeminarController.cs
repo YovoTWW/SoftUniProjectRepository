@@ -2,6 +2,7 @@
 using EuropeBJJ.Data;
 using EuropeBJJ.Data.Models;
 using EuropeBJJ.Models;
+using EuropeBJJ.Models.Event.Seminar;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;

@@ -1,4 +1,4 @@
-﻿namespace EuropeBJJ.Models
+﻿namespace EuropeBJJ.Models.Event.Tournament
 {
     public class TournamentViewModel
     {
@@ -11,12 +11,12 @@
 
         public string City { get; set; } = null!;
 
-        public string? Image {  get; set; } 
+        public string? Image { get; set; }
 
         public string? Link { get; set; }
 
         public bool IsPinned { get; set; }
 
-        public string? Creator {  get; set; }
+        public string? Creator { get; set; }
     }
 }

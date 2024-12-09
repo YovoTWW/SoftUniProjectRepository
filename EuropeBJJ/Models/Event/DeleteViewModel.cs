@@ -1,4 +1,4 @@
-﻿namespace EuropeBJJ.Models
+﻿namespace EuropeBJJ.Models.Event
 {
     public class DeleteViewModel
     {

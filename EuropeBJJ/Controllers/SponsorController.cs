@@ -1,7 +1,7 @@
 ﻿using EuropeBJJ.Constants;
 using EuropeBJJ.Data;
 using EuropeBJJ.Data.Models;
-using EuropeBJJ.Models;
+using EuropeBJJ.Models.Sponsor;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
