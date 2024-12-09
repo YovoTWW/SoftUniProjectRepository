@@ -26,6 +26,7 @@ namespace EuropeBJJ.Controllers
             return User.FindFirstValue(ClaimTypes.NameIdentifier);
         }
 
+
         [HttpGet]
         public async Task<IActionResult> Index(string searchTextName, string filterCountry)
         {
@@ -65,8 +66,9 @@ namespace EuropeBJJ.Controllers
 
         [HttpGet]
         public async Task<IActionResult> Add()
-        {
+        {                      
             var model = new AddSeminarViewModel();
+          
             return this.View(model);
         }
 
@@ -102,7 +104,7 @@ namespace EuropeBJJ.Controllers
                 Description = model.Description,
                 Teacher = model.Teacher,
                 AccountId = GetCurrentUserId() ?? string.Empty,
-                IsRemoved = false
+                IsRemoved = false,
             };
 
             await dbContext.Events.AddAsync(seminar);

@@ -1,44 +1,55 @@
 ﻿@using EuropeBJJ.Models.Event;
 @model IEnumerable<EventGeneralisedViewModel>
-@{
-    ViewData["Title"] = "Pinned Events";
-    string searchTextName = ViewData["SearchTextName"] as string ?? string.Empty;
-    string filterCountry = ViewData["FilterCountry"] as string ?? string.Empty;
-    List<string> Countries = ViewData["Countries"] as List<string> ?? null;
+@{    
+        ViewData["Title"] = "Pinned Events";    
+        string searchTextName = ViewData["SearchTextName"] as string ?? string.Empty;
+        string filterCountry = ViewData["FilterCountry"] as string ?? string.Empty;
+        List<string> Countries = ViewData["Countries"] as List<string> ?? null;
 }
 
 <div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: 20px;">
-    <h2>@ViewData["Title"]</h2>
+    @if (User?.Identity?.IsAuthenticated ?? false)
+    {
+        <h2>@ViewData["Title"]</h2>
+    }
+    @if (!User?.Identity?.IsAuthenticated ?? false)
+    {
+        <h2>Can only be viewed by Logged in Users</h2>
+    }
 </div>
 <hr />
 
-<form method="get" class="mb-4">
-    <div class="row">
-        <div class="col">
-            <input 
+@if (User?.Identity?.IsAuthenticated ?? false)
+{
+    <form method="get" class="mb-4">
+        <div class="row">
+            <div class="col">
+                <input 
                 type="text" 
                 name="searchTextName" 
                 class="form-control" 
                 placeholder="Search by Name" 
                 value="@searchTextName">
-            <button type="submit" class="btn btn-primary">
-                <i class="bi bi-search"></i> Search
-            </button>
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-search"></i> Search
+                </button>
+            </div>
+            <div class="col">
+                <select name="FilterCountry" class="form-control2">
+                    <option value="">Select a Country</option>
+                    @foreach (string country in Countries)
+                    {
+                        <option value="@country" filterCountry=country>@country</option>
+                    }
+                </select>
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-search"></i> Search
+                </button>
+            </div>
         </div>
-        <div class="col">
-    <select name="FilterCountry" class="form-control2">
-        <option value="">Select a Country</option>
-                @foreach (string country in Countries)
-        {
-                    <option value="@country" filterCountry=country>@country</option>
-        }
-    </select>
-    <button type="submit" class="btn btn-primary">
-        <i class="bi bi-search"></i> Search
-    </button>
-</div>
-    </div>
-</form>
+    </form>
+}
+
 
 
 <div class="row text-center">

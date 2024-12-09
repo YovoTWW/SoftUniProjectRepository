@@ -2,19 +2,27 @@
 @model SponsorViewModel
 
 @{
-    ViewData["Title"] = "Add Sponsor";
-    
+    ViewData["Title"] = "Add Sponsor";    
 }
 
 <div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: 20px;">
-    <h2>@ViewData["Title"]</h2>
+    @if (User.IsInRole("Administrator"))
+    {
+        <h2>@ViewData["Title"]</h2>
+    }
+    @if (!User.IsInRole("Administrator"))
+    {
+        <h2>Can only be viewed by Administrators</h2>
+    }
 </div>
 <hr />
 
 <div class="row">
     <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
-        <form asp-action="Add" method="post" enctype="multipart/form-data">
-            <div class="row">
+        @if (User.IsInRole("Administrator"))
+        {
+            <form asp-action="Add" method="post" enctype="multipart/form-data">
+                <div class="row">
                 <div class="col-sm-6 mb-2">
                     <label asp-for="@Model.Name" class="form-label-add-edit">Sponsor Name</label>
                     <input asp-for="@Model.Name" class="form-control" aria-required="true" />
@@ -36,5 +44,6 @@
                 <input class="btn btn-warning btn-dark-text w-100 py-2 fw-bold rounded" type="submit" value="Save" />
             </div>
         </form>
+        }
     </div>
 </div>
