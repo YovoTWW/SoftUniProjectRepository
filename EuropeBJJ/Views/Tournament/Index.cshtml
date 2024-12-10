@@ -69,8 +69,10 @@
                 <div class="card-body d-flex flex-column">
                     <h5 class="card-title">@tournament.Name</h5>
                     <p class="card-text">Location: @tournament.City , @tournament.Country</p>
-                    <p class="card-text">Link: @tournament.Link</p>
-                     <div class="d-flex justify-content-between mt-auto">
+                    <p class="card-text">
+                        Link: <a href="@tournament.Link" target="_blank">@tournament.Link</a>
+                    </p>
+                    <div class="d-flex justify-content-between mt-auto">
                         @if (User?.Identity?.IsAuthenticated == true && !tournament.IsPinned)
                         {
                             <a asp-controller="Event" asp-action="Details" asp-route-id="@tournament.Id" class="btn btn-info me-2 w-50"><i class="bi bi-card-text"></i>Details</a>
