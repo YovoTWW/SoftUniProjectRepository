@@ -82,7 +82,8 @@ namespace EuropeBJJ.Controllers
                AboutText = model.AboutText,
                Country = model.Country,
                Team = model.Team,
-               AccountId = currentUserId
+               AccountId = currentUserId,
+               Picture = model.Picture
             };
 
             await dbContext.Profiles.AddAsync(profile);
@@ -143,9 +144,11 @@ namespace EuropeBJJ.Controllers
                 Belt = p.Belt,
                 AboutText = p.AboutText,
                 Country = p.Country,
-                Team = p.Team
+                Team = p.Team,
+                Picture = p.Picture,               
             }).FirstOrDefaultAsync();
 
+            
             return this.View(model);
         }
 
@@ -183,31 +186,34 @@ namespace EuropeBJJ.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete()
         {
-            var model = await dbContext.Sponsors.Where(s => s.Id == id).Where(s => s.IsRemoved == false).AsNoTracking().Select(e => new SponsorViewModel
+            string currentUserId = GetCurrentUserId() ?? string.Empty;
+
+            var model = await dbContext.Profiles.Where(p => p.AccountId==currentUserId).AsNoTracking().Select(e => new ProfileViewModel
             {
-                Id = e.Id,
-                Name = e.Name,
+                FullName = e.FullName
             }).FirstOrDefaultAsync();
 
             return this.View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(SponsorViewModel model)
+        public async Task<IActionResult> Delete(ProfileViewModel model)
         {
-            Sponsor? Sponsor = await dbContext.Sponsors.Where(s => s.Id == model.Id).Where(s => s.IsRemoved == false).FirstOrDefaultAsync();
+            string currentUserId = GetCurrentUserId() ?? string.Empty;
 
-            if (Sponsor != null)
+            Profile? Profile = await dbContext.Profiles.Where(p=>p.AccountId==currentUserId).FirstOrDefaultAsync();
+
+            if (Profile != null)
             {
 
-                Sponsor.IsRemoved = true;
+                dbContext.Profiles.Remove(Profile);
 
                 await dbContext.SaveChangesAsync();
             }
 
-            return RedirectToAction("Index", "Sponsor");
+            return RedirectToAction("Index", "Home");
         }
     }
 

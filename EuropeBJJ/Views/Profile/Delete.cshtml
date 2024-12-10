@@ -1,0 +1,53 @@
+﻿@using EuropeBJJ.Models.Profile;
+@model ProfileViewModel
+
+@{
+    ViewData["Title"] = "Delete Profile";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: 20px;">
+    @if (User?.Identity?.IsAuthenticated ?? false)
+    {
+        @if (Model != null)
+        {
+            <h2>
+                @ViewData["Title"]
+            </h2>
+        }
+        @if (Model == null)
+        {
+            <h2>Profile not set up yet</h2>
+        }
+    }
+    @if (!User?.Identity?.IsAuthenticated ?? false)
+    {
+        <h2>Can only be viewed by Logged in Users</h2>
+    }
+</div>
+<hr />
+
+@if (User?.Identity?.IsAuthenticated ?? false)
+{
+    if (Model != null)
+    {
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title text-center">@Model.FullName</h3>
+                        <p class="text-danger mt-3">Are you sure you want to delete @(Model.FullName) profile ?</p>
+                    </div>
+                    <div class="card-footer">
+                        <form asp-action="Delete" method="post">
+                            <input type="hidden" asp-for="FullName" />
+                            <button type="submit" class="btn btn-danger">Confirm Delete</button>
+                            <a asp-controller="Profile" asp-action="MyProfile" class="btn btn-warning">Cancel</a>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    }
+}
