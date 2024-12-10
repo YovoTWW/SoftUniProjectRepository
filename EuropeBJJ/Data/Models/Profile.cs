@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using static EuropeBJJ.Constants.ModelConstants;
 
 namespace EuropeBJJ.Data.Models
@@ -27,6 +29,9 @@ namespace EuropeBJJ.Data.Models
         public List<EventProfile> EventsAttending { get; set; } = new List<EventProfile>();
 
         public string? AccountId { get; set; }
+
+        [ForeignKey(nameof(AccountId))]
+        public IdentityUser Account { get; set; }
 
     }
 }

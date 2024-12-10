@@ -1,0 +1,56 @@
+﻿@using EuropeBJJ.Models.Profile;
+@model ProfileDetailedViewModel
+
+@{
+    ViewData["Title"] = "My Profile";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: 20px;">
+    <h2>@ViewData["Title"]</h2>
+</div>
+<hr />
+
+@if(Model==null)
+{
+    <h2>Profile not set up yet</h2>
+    <a asp-controller="Profile" asp-action="Add" class="btn btn-primary"><i class="bi bi-plus-circle"></i>Create Profile</a>
+}
+
+@if(Model != null)
+{
+<div class="row justify-content-center" style="margin: 0 auto; max-width: 800px;">
+    <div class="col-md-4 text-center">
+        @if (!string.IsNullOrEmpty(Model.Picture))
+        {
+            <img src="@Model.Picture" class="img-fluid" style="max-width: 100%; height: auto;" alt="@Model.FullName" />
+        }
+        else
+        {
+            <img src="~/img/blank-profile-picture.jpg" class="img-fluid" style="max-width: 100%; height: auto;" alt="No Image Available" />
+        }
+    </div>
+    <div class="col-md-8">
+        <div class="card-body">
+            <h5 class="card-title">@Model.FullName</h5>            
+                <hr />
+                <h5 class="card-title">Age: @Model.Age</h5>                       
+                <hr />
+                <p class="card-text">Link : @Model.Belt</p>           
+            <hr />
+            <h6 class="card-subtitle mb-2 text-muted">Country : @Model.Country </h6>           
+                <h6 class="card-subtitle mb-2 text-muted">Team : @Model.Team</h6>
+                <hr />
+                <p class="card-text">About:</p>
+                <p>@Model.AboutText</p>
+                <hr />                    
+        </div>
+        <div class="card-footer text-center">
+            <div class="d-flex justify-content-between align-items-center">
+                <a asp-controller="Home" asp-action="Index" class="btn btn-warning d-flex justify-content-center align-items-center flex-fill mx-1"><i class="bi bi-arrow-bar-left"></i>Back</a>               
+                    <a asp-controller="Profile" asp-action="Edit" asp-route-id="@Model.ProfileId" class="btn btn-primary d-flex justify-content-center align-items-center flex-fill mx-1"><i class="bi bi-pencil-square"></i>Edit</a>
+                    <a asp-controller="Profile" asp-action="Delete" asp-route-id="@Model.ProfileId" class="btn btn-danger d-flex justify-content-center align-items-center flex-fill mx-1" onclick="return confirm('Are you sure you want to delete your profile');"><i class="bi bi-trash"></i>Delete</a>        
+            </div>
+        </div>
+    </div>
+</div>
+}

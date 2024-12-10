@@ -49,6 +49,9 @@ namespace EuropeBJJ.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(AddProfileViewModel model)
         {
+
+            string currentUserId = GetCurrentUserId() ?? string.Empty;
+
             if (!this.ModelState.IsValid)
             {
                 return this.View(model);
@@ -63,7 +66,7 @@ namespace EuropeBJJ.Controllers
                Belt = model.Belt,
                AboutText = model.AboutText,
                Country = model.Country,
-               AccountId = GetCurrentUserId() ?? string.Empty,
+               AccountId = currentUserId
             };
 
             await dbContext.Profiles.AddAsync(profile);
@@ -75,7 +78,6 @@ namespace EuropeBJJ.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            string currentUserId = GetCurrentUserId() ?? string.Empty;
 
             var model = await dbContext.Profiles.Where(p => p.ProfileId == id).AsNoTracking().Select(p => new ProfileDetailedViewModel
             {
@@ -85,10 +87,30 @@ namespace EuropeBJJ.Controllers
                Belt = p.Belt,
                AboutText = p.AboutText,
                Country = p.Country,
-               
+               Creator = p.Account.UserName ?? string.Empty
             }).FirstOrDefaultAsync();
 
             return this.View(model);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> MyProfile()
+        {
+            string currentUserId = GetCurrentUserId() ?? string.Empty;
+
+            var model = await dbContext.Profiles.Where(p => p.AccountId==currentUserId).AsNoTracking().Select(p => new ProfileDetailedViewModel
+            {
+                ProfileId = p.ProfileId,
+                FullName = p.FullName,
+                Age = p.Age,
+                Belt = p.Belt,
+                AboutText = p.AboutText,
+                Country = p.Country,
+                Creator = p.Account.UserName ?? string.Empty
+            }).FirstOrDefaultAsync();
+
+            return this.View(model);
+        }
+
     }
 }
