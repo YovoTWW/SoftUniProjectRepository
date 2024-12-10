@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using static EuropeBJJ.Constants.ModelConstants;
+using static EuropeBJJ.Constants.CountriesList;
+using static EuropeBJJ.Constants.BeltLevelList;
 
 namespace EuropeBJJ.Models.Profile
 {
@@ -24,5 +26,11 @@ namespace EuropeBJJ.Models.Profile
         public string? AboutText { get; set; }
 
         public string? Picture { get; set; }
+
+        public bool Exists { get; set; }
+
+        public List<string> Countries = ListOfCountries;
+
+        public List<string> Belts = BeltLevels;
     }
 }

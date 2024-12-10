@@ -6,22 +6,32 @@
 }
 
 <div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: 20px;">
-    @if (Model != null)
+    @if (User?.Identity?.IsAuthenticated ?? false)
     {
-        <h2>@ViewData["Title"]
-        </h2>
+        @if (Model != null)
+        {
+            <h2>@ViewData["Title"]
+            </h2>
+        }
+        @if (Model == null)
+        {
+            <h2>Profile not set up yet</h2>
+            <a asp-controller="Profile" asp-action="Add" class="btn btn-primary"><i class="bi bi-plus-circle"></i>Create Profile</a>
+        }
     }
-    @if (Model == null)
+
+    @if (!User?.Identity?.IsAuthenticated ?? false)
     {
-        <h2>Profile not set up yet</h2>
-        <a asp-controller="Profile" asp-action="Add" class="btn btn-primary"><i class="bi bi-plus-circle"></i>Create Profile</a>
+        <h2>Can only be viewed by Logged in Users</h2>
     }
 </div>
 <hr />
 
 
-@if(Model != null)
+@if (User?.Identity?.IsAuthenticated ?? false)
 {
+    if(Model != null)
+    {
 <div class="row justify-content-center" style="margin: 0 auto; max-width: 800px;">
     <div class="col-md-4 text-center">
         @if (!string.IsNullOrEmpty(Model.Picture))
@@ -39,7 +49,7 @@
                 <hr />
                 <h5 class="card-title">Age: @Model.Age</h5>                       
                 <hr />
-                <p class="card-text">Link : @Model.Belt</p>           
+                <p class="card-text">Belt Level : @Model.Belt</p>           
             <hr />
             <h6 class="card-subtitle mb-2 text-muted">Country : @Model.Country </h6>           
                 <h6 class="card-subtitle mb-2 text-muted">Team : @Model.Team</h6>
@@ -57,4 +67,5 @@
         </div>
     </div>
 </div>
+}
 }

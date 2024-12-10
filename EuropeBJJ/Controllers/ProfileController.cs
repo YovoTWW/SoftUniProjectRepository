@@ -42,7 +42,20 @@ namespace EuropeBJJ.Controllers
             [HttpGet]
         public async Task<IActionResult> Add()
         {
+            string currentUserId = GetCurrentUserId() ?? string.Empty;
+
             var model = new AddProfileViewModel();
+
+            Profile profile = await dbContext.Profiles.FirstOrDefaultAsync(p=>p.AccountId== currentUserId);
+            if(profile == null)
+            {
+                model.Exists = false;
+            }
+            else
+            {
+                model.Exists = true;
+            }
+
             return this.View(model);
         }
 
@@ -66,13 +79,14 @@ namespace EuropeBJJ.Controllers
                Belt = model.Belt,
                AboutText = model.AboutText,
                Country = model.Country,
+               Team = model.Team,
                AccountId = currentUserId
             };
 
             await dbContext.Profiles.AddAsync(profile);
             await dbContext.SaveChangesAsync();
 
-            return this.RedirectToAction("Index", "Profile");
+            return this.RedirectToAction("MyProfile", "Profile");
         }
 
         [HttpGet]
@@ -106,6 +120,7 @@ namespace EuropeBJJ.Controllers
                 Belt = p.Belt,
                 AboutText = p.AboutText,
                 Country = p.Country,
+                Team = p.Team,
                 Creator = p.Account.UserName ?? string.Empty
             }).FirstOrDefaultAsync();
 
