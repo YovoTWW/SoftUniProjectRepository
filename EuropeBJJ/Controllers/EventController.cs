@@ -145,6 +145,11 @@ namespace EuropeBJJ.Controllers
                 EventType = e.Discriminator
             }).FirstOrDefaultAsync();
 
+            if (model == null)
+            {
+                throw new ArgumentException("Invalid id");
+            }
+
             return this.View(model);
         }
 
@@ -170,6 +175,11 @@ namespace EuropeBJJ.Controllers
                 EventType = e.Discriminator,
                 AccountId = GetCurrentUserId() ?? string.Empty
         }).FirstOrDefaultAsync();
+
+            if (model == null )
+            {
+                throw new ArgumentException("Invalid id");
+            }
 
             return this.View(model);
         }
@@ -251,6 +261,11 @@ namespace EuropeBJJ.Controllers
                 Account = e.Account.UserName ?? string.Empty,
                 AccountId = e.AccountId
             }).FirstOrDefaultAsync();
+
+            if (model == null)
+            {
+                throw new ArgumentException("Invalid id");
+            }
 
             return this.View(model);
         }
