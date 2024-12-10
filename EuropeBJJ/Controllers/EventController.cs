@@ -184,13 +184,18 @@ namespace EuropeBJJ.Controllers
             }
 
             bool validDate= DateTime.TryParseExact(model.Date, DateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime date);
-
-            if (!validDate)
+           
+            if (!validDate )
             {
                 ModelState.AddModelError(nameof(model.Date), "Invalid date format");               
                 return this.View(model);
             }
 
+            if(date<DateTime.Now)
+            {
+                ModelState.AddModelError(nameof(model.Date), "Date cannot be today or in the past");
+                return this.View(model);
+            }
             
 
             Event? entity = await dbContext.Events.FindAsync(id);

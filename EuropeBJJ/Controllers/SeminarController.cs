@@ -88,7 +88,11 @@ namespace EuropeBJJ.Controllers
                 return this.View(model);
             }
 
-
+            if (date < DateTime.Now)
+            {
+                ModelState.AddModelError(nameof(model.Date), "Date cannot be today or in the past");
+                return this.View(model);
+            }
 
             Seminar seminar = new Seminar
             {
