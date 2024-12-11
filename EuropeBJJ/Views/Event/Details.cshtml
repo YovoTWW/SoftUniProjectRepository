@@ -80,7 +80,7 @@
                         }
                     }
                 }
-                @if (User?.Identity?.Name == @Model.Creator)
+                @if (User?.Identity?.Name == @Model.Creator || User.IsInRole("Administrator"))
                 {
                     <a asp-controller="Event" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary d-flex justify-content-center align-items-center flex-fill mx-1"><i class="bi bi-pencil-square"></i>Edit</a>
                     <a asp-controller="Event" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger d-flex justify-content-center align-items-center flex-fill mx-1" onclick="return confirm('Are you sure you want to delete this event?');"><i class="bi bi-trash"></i>Delete</a>

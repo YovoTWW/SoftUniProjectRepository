@@ -8,7 +8,7 @@
 }
 
 <div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: 20px;">
-    @if (User?.Identity?.Name == Model.Creator)
+    @if (User?.Identity?.Name == Model.Creator || User.IsInRole("Administrator"))
     {
         <h2>@ViewData["Title"]</h2>
     }
@@ -21,7 +21,7 @@
 
 <div class="row">
     <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
-         @if (User?.Identity?.Name == Model.Creator)
+        @if (User?.Identity?.Name == Model.Creator || User.IsInRole("Administrator"))
         {
             <form asp-action="Edit" method="post" enctype="multipart/form-data">
                 <div class="row">
