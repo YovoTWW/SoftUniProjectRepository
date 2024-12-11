@@ -71,7 +71,7 @@
                     <p class="card-text">Event Type: @Event.EventType</p>
                     <div class="d-flex justify-content-between mt-auto">
                         <a asp-controller="Event" asp-action="Details" asp-route-id="@Event.Id" class="btn btn-info me-2 w-50"><i class="bi bi-card-text"></i>Details</a>
-                        <form asp-controller="Event" asp-action="RemoveFromAttending" asp-route-id="@Event.Id" method="post" style="display:inline;">
+                        <form asp-controller="Profile" asp-action="RemoveFromAttending" asp-route-id="@Event.Id" method="post" style="display:inline;">
                             <button type="submit" class="btn btn-danger"><i class="bi bi-pin-angle"></i>Remove from Attending</button>
                         </form>
                     </div>

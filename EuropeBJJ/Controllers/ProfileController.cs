@@ -305,6 +305,32 @@ namespace EuropeBJJ.Controllers
             return this.RedirectToAction("Attending");
         }
 
+        [HttpPost]
+        public async Task<IActionResult> RemoveFromAttending(int id)
+        {
+            string currentUserId = GetCurrentUserId() ?? string.Empty;
+
+            Event? EventEntity = await dbContext.Events.Where(e => e.Id == id).Include(e => e.Attendees).FirstOrDefaultAsync();
+            Profile? ProfileEntity = await dbContext.Profiles.FirstOrDefaultAsync(p => p.AccountId == currentUserId && p.IsDeleted == false);
+
+            EventProfile? eventProfile = EventEntity.Attendees.FirstOrDefault(ea => ea.ProfileId == ProfileEntity.ProfileId);
+
+            if (EventEntity == null || EventEntity.IsRemoved)
+            {
+                return RedirectToAction("NotFound", "Home");
+                //throw new ArgumentException("Invalid id");
+            }
+
+            if (eventProfile != null)
+            {
+                EventEntity.Attendees.Remove(eventProfile);
+                ProfileEntity.EventsAttending.Remove(eventProfile);
+
+                await dbContext.SaveChangesAsync();
+            }
+
+            return this.RedirectToAction("Attending");
+        }
 
     }
 }
