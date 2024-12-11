@@ -33,5 +33,9 @@
         public string? Creator { get; set; }
 
         public string EventType { get; set; } = null!;
+
+        public bool UserProfileExists { get; set; }
+
+        public bool IsAttending { get; set; }
     }
 }

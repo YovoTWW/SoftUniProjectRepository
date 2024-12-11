@@ -1,8 +1,6 @@
-﻿using static EuropeBJJ.Constants.CountriesList;
-
-namespace EuropeBJJ.Models.Event
+﻿namespace EuropeBJJ.Models.Profile
 {
-    public class EventGeneralisedViewModel
+    public class AttendingEventViewModel
     {
         public int Id { get; set; }
         public string Name { get; set; } = null!;

@@ -33,5 +33,7 @@ namespace EuropeBJJ.Data.Models
         [ForeignKey(nameof(AccountId))]
         public IdentityUser Account { get; set; }
 
+        public bool IsDeleted {  get; set; }
+
     }
 }

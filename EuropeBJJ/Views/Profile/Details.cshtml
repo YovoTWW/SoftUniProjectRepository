@@ -1,0 +1,70 @@
+﻿@using EuropeBJJ.Models.Profile;
+@model ProfileDetailedViewModel
+
+@{
+    ViewData["Title"] = "Profile Details";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: 20px;">
+    @if (User?.Identity?.IsAuthenticated ?? false)
+    {
+        @if (Model != null)
+        {
+            <h2>
+                @ViewData["Title"]
+            </h2>
+            <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="Attending">Events Attending</a>
+        }
+        @if (Model == null)
+        {
+            <h2>Profile does not exist</h2>
+        }
+    }
+
+    @if (!User?.Identity?.IsAuthenticated ?? false)
+    {
+        <h2>Can only be viewed by Logged in Users</h2>
+    }
+</div>
+<hr />
+
+
+@if (User?.Identity?.IsAuthenticated ?? false)
+{
+    if (Model != null)
+    {
+        <div class="row justify-content-center" style="margin: 0 auto; max-width: 800px;">
+            <div class="col-md-4 text-center">
+                @if (!string.IsNullOrEmpty(Model.Picture))
+                {
+                    <img src="@Model.Picture" class="img-fluid" style="max-width: 100%; height: auto;" />
+                }
+                else
+                {
+                    <img src="~/img/blank-profile-picture.jpg" class="img-fluid" style="max-width: 100%; height: auto;" alt="No Image Available" />
+                }
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title">@Model.FullName</h5>
+                    <hr />
+                    <h5 class="card-title">Age: @Model.Age</h5>
+                    <hr />
+                    <p class="card-text">Belt Level : @Model.Belt</p>
+                    <hr />
+                    <h6 class="card-subtitle mb-2 text-muted">Country : @Model.Country </h6>
+                    <h6 class="card-subtitle mb-2 text-muted">Team : @Model.Team</h6>
+                    <hr />
+                    <p class="card-text">About:</p>
+                    <p>@Model.AboutText</p>
+                    <hr />
+                </div>
+                <div class="card-footer text-center">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-warning d-flex justify-content-center align-items-center flex-fill mx-1"><i class="bi bi-arrow-bar-left"></i>Back</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}

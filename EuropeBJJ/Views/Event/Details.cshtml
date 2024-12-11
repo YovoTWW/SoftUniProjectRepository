@@ -54,17 +54,31 @@
                 <hr />
                 <p class="card-text"><small class="text-muted">Price for Members : @Model.MembersPrice.ToString("\u20AC0.00") / Price for Non Members : @Model.NonMembersPrice.ToString(("\u20AC0.00"))</small></p>
             }
-                <hr />           
+                <hr />
+            <a asp-controller="Event" asp-action="AttendeesList" asp-route-id="@Model.Id" class="btn btn-primary d-flex justify-content-center align-items-center flex-fill mx-1"><i class="bi bi-card-list"></i>List of Attendees</a>
         </div>
         <div class="card-footer text-center">
             <div class="d-flex justify-content-between align-items-center">
                 <a asp-controller="Home" asp-action="Index" class="btn btn-warning d-flex justify-content-center align-items-center flex-fill mx-1"><i class="bi bi-arrow-bar-left"></i>Back</a>
-                @if (User?.Identity?.IsAuthenticated == true && !Model.IsPinned)
+                @if (User?.Identity?.IsAuthenticated == true )
                 {
-                    <form asp-controller="Event" asp-action="AddToPinned" method="post" class="d-flex justify-content-center align-items-center flex-fill mx-1">
-                        <input type="hidden" name="id" value="@Model.Id" />
-                        <button type="submit" class="btn btn-success w-100"><i class="bi bi-pin"></i>Pin</button>
-                    </form>
+                    @if (!Model.IsPinned)
+                    {
+                        <form asp-controller="Event" asp-action="AddToPinned" method="post" class="d-flex justify-content-center align-items-center flex-fill mx-1">
+                            <input type="hidden" name="id" value="@Model.Id" />
+                            <button type="submit" class="btn btn-success w-100"><i class="bi bi-pin"></i>Pin</button>
+                        </form>
+                    }
+                    @if(Model.UserProfileExists)
+                    {
+                        @if (!Model.IsAttending)
+                        {
+                            <form asp-controller="Profile" asp-action="Attend" method="post" class="d-flex justify-content-center align-items-center flex-fill mx-1">
+                                <input type="hidden" name="id" value="@Model.Id" />
+                                <button type="submit" class="btn btn-success w-100"><i class="bi bi-check-lg"></i>Attend</button>
+                            </form>
+                        }
+                    }
                 }
                 @if (User?.Identity?.Name == @Model.Creator)
                 {

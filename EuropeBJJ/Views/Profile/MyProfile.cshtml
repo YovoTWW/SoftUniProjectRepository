@@ -12,6 +12,7 @@
         {
             <h2>@ViewData["Title"]
             </h2>
+            <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="Attending">Events Attending</a>
         }
         @if (Model == null)
         {
@@ -36,7 +37,7 @@
     <div class="col-md-4 text-center">
         @if (!string.IsNullOrEmpty(Model.Picture))
         {
-            <img src="@Model.Picture" class="img-fluid" style="max-width: 100%; height: auto;" alt="@Model.FullName" />
+            <img src="@Model.Picture" class="img-fluid" style="max-width: 100%; height: auto;"  />
         }
         else
         {

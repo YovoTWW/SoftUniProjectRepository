@@ -23,6 +23,11 @@ namespace EuropeBJJ.Controllers
         //    return View();
         //}
 
+        public IActionResult NotFound()
+        {
+            return this.View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

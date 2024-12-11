@@ -1,10 +1,10 @@
-﻿@using EuropeBJJ.Models.Event;
-@model IEnumerable<EventGeneralisedViewModel>
-@{    
-        ViewData["Title"] = "Pinned Events";    
-        string searchTextName = ViewData["SearchTextName"] as string ?? string.Empty;
-        string filterCountry = ViewData["FilterCountry"] as string ?? string.Empty;
-        List<string> Countries = ViewData["Countries"] as List<string> ?? null;
+﻿@using EuropeBJJ.Models.Profile;
+@model IEnumerable<AttendingEventViewModel>
+@{
+    ViewData["Title"] = "Events Attending";
+    string searchTextName = ViewData["SearchTextName"] as string ?? string.Empty;
+    string filterCountry = ViewData["FilterCountry"] as string ?? string.Empty;
+    List<string> Countries = ViewData["Countries"] as List<string> ?? null;
 }
 
 <div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: 20px;">
@@ -13,8 +13,8 @@
         <h2>@ViewData["Title"]</h2>
     }
     @if (!User?.Identity?.IsAuthenticated ?? false)
-    {       
-        <h2>Can only be viewed by Logged in Users</h2>        
+    {
+        <h2>Can only be viewed by Logged in Users</h2>
     }
 </div>
 <hr />
@@ -24,12 +24,11 @@
     <form method="get" class="mb-4">
         <div class="row">
             <div class="col">
-                <input 
-                type="text" 
-                name="searchTextName" 
-                class="form-control" 
-                placeholder="Search by Name" 
-                value="@searchTextName">
+                <input type="text"
+                       name="searchTextName"
+                       class="form-control"
+                       placeholder="Search by Name"
+                       value="@searchTextName">
                 <button type="submit" class="btn btn-primary">
                     <i class="bi bi-search"></i> Search
                 </button>
@@ -70,16 +69,17 @@
                     <h5 class="card-title">@Event.Name</h5>
                     <p class="card-text">Location: @Event.City , @Event.Country</p>
                     <p class="card-text">Event Type: @Event.EventType</p>
-                     <div class="d-flex justify-content-between mt-auto">
+                    <div class="d-flex justify-content-between mt-auto">
                         <a asp-controller="Event" asp-action="Details" asp-route-id="@Event.Id" class="btn btn-info me-2 w-50"><i class="bi bi-card-text"></i>Details</a>
-                        <form asp-controller="Event" asp-action="RemoveFromPinned" asp-route-id="@Event.Id" method="post" style="display:inline;">
-                            <button type="submit" class="btn btn-danger"><i class="bi bi-pin-angle"></i>Remove from Pinned</button>
-                </form>
-                </div> 
+                        <form asp-controller="Event" asp-action="RemoveFromAttending" asp-route-id="@Event.Id" method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-danger"><i class="bi bi-pin-angle"></i>Remove from Attending</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     }
 </div>
+
 
 

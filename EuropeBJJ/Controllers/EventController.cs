@@ -11,6 +11,7 @@ using Microsoft.IdentityModel.Abstractions;
 using Microsoft.Identity.Client;
 using EuropeBJJ.Constants;
 using EuropeBJJ.Models.Event;
+using EuropeBJJ.Models.Profile;
 
 namespace EuropeBJJ.Controllers
 {
@@ -77,7 +78,8 @@ namespace EuropeBJJ.Controllers
 
             if (entity == null || entity.IsRemoved)
             {
-                throw new ArgumentException("Invalid id");
+                return RedirectToAction("NotFound", "Home");
+               // throw new ArgumentException("Invalid id");
             }
 
             if (entity.EventAccounts.Any(ea=> ea.AccountId == currentUserId))
@@ -107,7 +109,8 @@ namespace EuropeBJJ.Controllers
 
             if (entity == null || entity.IsRemoved)
             {
-                throw new ArgumentException("Invalid id");
+                return RedirectToAction("NotFound", "Home");
+                //throw new ArgumentException("Invalid id");
             }
 
             if (eventAccount != null)
@@ -125,6 +128,14 @@ namespace EuropeBJJ.Controllers
         {
             string currentUserId = GetCurrentUserId() ?? string.Empty;
 
+            Profile? profile = await dbContext.Profiles.FirstOrDefaultAsync(p => p.AccountId == currentUserId && p.IsDeleted == false);
+            int ProfileId = 0;
+
+            if(profile!=null)
+            {
+                ProfileId = profile.ProfileId;
+            }
+
             var model = await dbContext.Events.Where(e => e.Id == id).Where(e => e.IsRemoved == false).AsNoTracking().Select(e => new EventDetailsViewModel
             {
                 Id = e.Id,
@@ -140,14 +151,25 @@ namespace EuropeBJJ.Controllers
                 NonMembersPrice = e.NonMembersPrice ?? 0m,
                 Teacher = e.Teacher ?? string.Empty,
                 IsPinned = e.EventAccounts.Any(ea => ea.AccountId == currentUserId),
+                IsAttending = e.Attendees.Any(ea =>ea.ProfileId==ProfileId),
                 Creator = e.Account.UserName ?? string.Empty,
                 Link = e.Link ?? string.Empty,
-                EventType = e.Discriminator
+                EventType = e.Discriminator,
             }).FirstOrDefaultAsync();
 
             if (model == null)
             {
-                throw new ArgumentException("Invalid id");
+                return RedirectToAction("NotFound", "Home");
+                //throw new ArgumentException("Invalid id");
+            }
+
+            if(profile==null)
+            {
+                model.UserProfileExists = false;
+            }
+            else
+            {
+                model.UserProfileExists = true;
             }
 
             return this.View(model);
@@ -178,7 +200,8 @@ namespace EuropeBJJ.Controllers
 
             if (model == null )
             {
-                throw new ArgumentException("Invalid id");
+                return RedirectToAction("NotFound", "Home");
+                //throw new ArgumentException("Invalid id");
             }
 
             return this.View(model);
@@ -212,7 +235,8 @@ namespace EuropeBJJ.Controllers
 
             if (entity == null || entity.IsRemoved)
             {
-                throw new ArgumentException("Invalid id");
+                return RedirectToAction("NotFound", "Home");
+                //throw new ArgumentException("Invalid id");
             }
             string currentUserId = GetCurrentUserId() ?? string.Empty;
 
@@ -264,7 +288,8 @@ namespace EuropeBJJ.Controllers
 
             if (model == null)
             {
-                throw new ArgumentException("Invalid id");
+                return RedirectToAction("NotFound", "Home");
+                //throw new ArgumentException("Invalid id");
             }
 
             return this.View(model);
@@ -284,6 +309,25 @@ namespace EuropeBJJ.Controllers
             }
 
             return RedirectToAction("Index","Home");
+        }
+
+        [HttpGet]
+
+        public async Task<IActionResult> AttendeesList(int id)
+        {
+            string currentUserId = GetCurrentUserId() ?? string.Empty;
+            ViewData["Countries"] = CountriesList.ListOfCountries;
+
+
+            var model = await dbContext.Profiles.Where(e => e.IsDeleted == false).Where(e => e.EventsAttending.Any(ea => ea.EventId == id))
+                .Select(e => new AttendeeProfileViewModel()
+                {
+                    FullName = e.FullName,
+                    Picture = e.Picture,
+                    ProfileId = e.ProfileId
+                }).AsNoTracking().ToListAsync();
+
+            return this.View(model);
         }
     }
 

@@ -1,4 +1,5 @@
-﻿using EuropeBJJ.Data;
+﻿using EuropeBJJ.Constants;
+using EuropeBJJ.Data;
 using EuropeBJJ.Data.Models;
 using EuropeBJJ.Models.Event;
 using EuropeBJJ.Models.Profile;
@@ -10,6 +11,7 @@ using System.Security.Claims;
 
 namespace EuropeBJJ.Controllers
 {
+    using static EuropeBJJ.Constants.ModelConstants;
     public class ProfileController : Controller
     {
 
@@ -30,7 +32,7 @@ namespace EuropeBJJ.Controllers
         public async Task<IActionResult> Index()
         {
 
-            var model = await dbContext.Profiles.Select(p => new ProfileViewModel()
+            var model = await dbContext.Profiles.Where(p=>p.IsDeleted==false).Select(p => new ProfileViewModel()
             {
                 ProfileId = p.ProfileId,
                 FullName = p.FullName,
@@ -47,7 +49,7 @@ namespace EuropeBJJ.Controllers
 
             var model = new AddProfileViewModel();
 
-            Profile profile = await dbContext.Profiles.FirstOrDefaultAsync(p=>p.AccountId== currentUserId);
+            Profile profile = await dbContext.Profiles.FirstOrDefaultAsync(p=>p.AccountId== currentUserId && p.IsDeleted==false);
 
             if(profile == null)
             {
@@ -96,7 +98,7 @@ namespace EuropeBJJ.Controllers
         public async Task<IActionResult> Details(int id)
         {
 
-            var model = await dbContext.Profiles.Where(p => p.ProfileId == id).AsNoTracking().Select(p => new ProfileDetailedViewModel
+            var model = await dbContext.Profiles.Where(p => p.ProfileId == id).Where(p=>p.IsDeleted==false).AsNoTracking().Select(p => new ProfileDetailedViewModel
             {
                ProfileId = p.ProfileId,
                FullName = p.FullName,
@@ -104,6 +106,7 @@ namespace EuropeBJJ.Controllers
                Belt = p.Belt,
                AboutText = p.AboutText,
                Country = p.Country,
+               Picture = p.Picture,
                Creator = p.Account.UserName ?? string.Empty
             }).FirstOrDefaultAsync();
 
@@ -115,7 +118,7 @@ namespace EuropeBJJ.Controllers
         {
             string currentUserId = GetCurrentUserId() ?? string.Empty;
 
-            var model = await dbContext.Profiles.Where(p => p.AccountId==currentUserId).AsNoTracking().Select(p => new ProfileDetailedViewModel
+            var model = await dbContext.Profiles.Where(p => p.AccountId==currentUserId).Where(p=>p.IsDeleted==false).AsNoTracking().Select(p => new ProfileDetailedViewModel
             {
                 ProfileId = p.ProfileId,
                 FullName = p.FullName,
@@ -124,6 +127,7 @@ namespace EuropeBJJ.Controllers
                 AboutText = p.AboutText,
                 Country = p.Country,
                 Team = p.Team,
+                Picture = p.Picture,
                 Creator = p.Account.UserName ?? string.Empty
             }).FirstOrDefaultAsync();
 
@@ -137,7 +141,7 @@ namespace EuropeBJJ.Controllers
         {
             string currentUserId = GetCurrentUserId() ?? string.Empty;
 
-            var model = await dbContext.Profiles.Where(p => p.AccountId==currentUserId).AsNoTracking().Select(p => new AddProfileViewModel
+            var model = await dbContext.Profiles.Where(p => p.AccountId == currentUserId).Where(p => p.IsDeleted == false).AsNoTracking().Select(p => new AddProfileViewModel
             {
                 FullName = p.FullName,
                 Age = p.Age,
@@ -164,11 +168,12 @@ namespace EuropeBJJ.Controllers
             }
 
 
-            Profile? entity = await dbContext.Profiles.FirstOrDefaultAsync(p => p.AccountId == currentUserId);
+            Profile? entity = await dbContext.Profiles.FirstOrDefaultAsync(p => p.AccountId == currentUserId && p.IsDeleted==false);
 
             if (entity == null )
             {
-                throw new ArgumentException("Profile is not Set Up");
+                return RedirectToAction("NotFound", "Home");
+                //throw new ArgumentException("Profile is not Set Up");
             }
 
 
@@ -190,7 +195,7 @@ namespace EuropeBJJ.Controllers
         {
             string currentUserId = GetCurrentUserId() ?? string.Empty;
 
-            var model = await dbContext.Profiles.Where(p => p.AccountId==currentUserId).AsNoTracking().Select(e => new ProfileViewModel
+            var model = await dbContext.Profiles.Where(p => p.AccountId == currentUserId).Where(p => p.IsDeleted == false).AsNoTracking().Select(e => new ProfileViewModel
             {
                 FullName = e.FullName
             }).FirstOrDefaultAsync();
@@ -203,20 +208,103 @@ namespace EuropeBJJ.Controllers
         {
             string currentUserId = GetCurrentUserId() ?? string.Empty;
 
-            Profile? Profile = await dbContext.Profiles.Where(p=>p.AccountId==currentUserId).FirstOrDefaultAsync();
+            Profile? Profile = await dbContext.Profiles.Where(p=>p.AccountId==currentUserId).Where(p=>p.IsDeleted==false).FirstOrDefaultAsync();
 
             if (Profile != null)
             {
-
-                dbContext.Profiles.Remove(Profile);
-
+                Profile.IsDeleted = true;
                 await dbContext.SaveChangesAsync();
             }
 
             return RedirectToAction("Index", "Home");
         }
+
+        [HttpGet]
+
+        public async Task<IActionResult> Attending(string searchTextName, string filterCountry)
+        {
+            string currentUserId = GetCurrentUserId() ?? string.Empty;
+
+            ViewData["SearchTextName"] = searchTextName;
+            ViewData["FilterCountry"] = filterCountry;
+            ViewData["Countries"] = CountriesList.ListOfCountries;
+
+            Profile? profile = await dbContext.Profiles.FirstOrDefaultAsync(p => p.AccountId == currentUserId && p.IsDeleted==false);
+            int ProfileId = 0;
+
+            if (profile != null)
+            {
+                ProfileId = profile.ProfileId;
+            }
+
+            var model = await dbContext.Events.Where(e => e.IsRemoved == false).Where(e => e.Attendees.Any(ea => ea.ProfileId == ProfileId))
+                .Select(e => new AttendingEventViewModel()
+                {
+                    Id = e.Id,
+                    Name = e.Name,
+                    Country = e.Country,
+                    City = e.City,
+                    Date = e.Date.ToString(DateFormat),
+                    Image = e.Image,
+                    EventType = e.Discriminator
+                }).AsNoTracking().ToListAsync();
+
+            
+
+            if (!string.IsNullOrWhiteSpace(searchTextName))
+            {
+                model = model.Where(e => e.Name.Contains(searchTextName, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+            if (!string.IsNullOrEmpty(filterCountry))
+            {
+                model = model.Where(e => e.Country == filterCountry).ToList();
+            }
+
+
+            return this.View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Attend(int id)
+        {
+            string currentUserId = GetCurrentUserId() ?? string.Empty;
+            Event? EventEntity = await dbContext.Events.Where(e => e.Id == id).Include(e => e.Attendees).FirstOrDefaultAsync();
+            Profile? ProfileEntity = await dbContext.Profiles.FirstOrDefaultAsync(p => p.AccountId == currentUserId && p.IsDeleted == false);
+
+            if (EventEntity == null || EventEntity.IsRemoved)
+            {
+                return RedirectToAction("NotFound", "Home");
+                //throw new ArgumentException("Invalid id");
+            }
+
+            if(ProfileEntity == null)
+            {
+                return RedirectToAction("NotFound", "Home");
+                //throw new ArgumentException("Profile not set up yet");
+            }
+
+            if (EventEntity.Attendees.Any(ea => ea.ProfileId == ProfileEntity.ProfileId))
+            {
+                return this.RedirectToAction("Index", "Home");
+            }
+
+            if(ProfileEntity.EventsAttending.Any(ea=>ea.EventId==id))
+            {
+                return this.RedirectToAction("Index", "Home");
+            }
+
+            EventEntity.Attendees.Add(new EventProfile()
+            {
+                ProfileId = ProfileEntity.ProfileId,
+                EventId = EventEntity.Id
+            });
+
+            await dbContext.SaveChangesAsync();
+
+            return this.RedirectToAction("Attending");
+        }
+
+
     }
-
-
-
 }

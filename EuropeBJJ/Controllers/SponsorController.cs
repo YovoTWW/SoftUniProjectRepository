@@ -94,7 +94,8 @@ namespace EuropeBJJ.Controllers
 
             if (entity == null || entity.IsRemoved)
             {
-                throw new ArgumentException("Invalid id");
+                return RedirectToAction("NotFound", "Home");
+                //throw new ArgumentException("Invalid id");
             }
            
 
