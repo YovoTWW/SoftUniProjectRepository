@@ -1,11 +1,12 @@
 ﻿@using EuropeBJJ.Models.Event;
 @model IEnumerable<EventGeneralisedViewModel>
-@{    
-        ViewData["Title"] = "Pinned Events";    
-        string searchTextName = ViewData["SearchTextName"] as string ?? string.Empty;
-        string filterCountry = ViewData["FilterCountry"] as string ?? string.Empty;
-        List<string> Countries = ViewData["Countries"] as List<string> ?? null;
+@{
+    ViewData["Title"] = "Pinned Events";    
+    string searchTextName = ViewData["SearchTextName"] as string ?? string.Empty;
+    string filterCountry = ViewData["FilterCountry"] as string ?? string.Empty;
+    List<string> Countries = ViewData["Countries"] as List<string> ?? null;
 }
+
 
 <div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: 20px;">
     @if (User?.Identity?.IsAuthenticated ?? false)
