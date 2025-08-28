@@ -1,5 +1,5 @@
 Overview : 
-ASP .NET Web Application showcasing a functioning online site for organizing Brazilian Jiu-Jitsu events in Europe.
+ASP .NET Web Application with a Microsoft Azure SQL Database showcasing a functioning online site for organizing Brazilian Jiu-Jitsu events in Europe.
 
 Features:
 - Users that have created and logged in to their accounts can pin events for later viewing , create Open Mat and Seminar events and make a profile.
