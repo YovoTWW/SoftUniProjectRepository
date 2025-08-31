@@ -16,10 +16,11 @@ Prerequisites for running the project locally:
 
 Running the app after installation :
 - After pulling the project from GitHub, if you wish to create a local database instead of using the Azure database, go to the appsettings.Development.json file in the EuropeBJJ project folder and edit the SqlServer connection string to something like this "Server=DESKTOP-...;Database=EuropeBJJDb;Trusted_Connection=True;TrustServerCertificate=True;" and make sure you are connected to your local SQL instance . After that in the Program.cs file edit this line : "var connectionString = builder.Configuration.GetConnectionString("AzureConnection") ?? throw new InvalidOperationException("Connection string not found.");" to replace "AzureConnection" to "SqlServer". Open the Package Manager Console and write "add-migration Initial".
-When creating migrations for connecting tables (EventsAccounts,EventsProfiles , etc.), 'onDelete: ReferentialAction.Cascade' needs to be changed to 'onDelete: ReferentialAction.NoAction' manually. After that open the Package Manager Console again and write
-"update-database". After that you should have a working web app with an empty database . If you wish to fill the database with data , you can do it manually through SQL or register as yovo352@gmail.com and have admin privileges (you can change the admin e-mail by editing
-this line in Program.cs :"string email = "admin@gmail.com";"). You might get an error related to user roles when launching the app for the 1st time , just launch it again and it should work.
+When creating migrations for connecting tables (EventsAccounts,EventsProfiles , etc.), '...: ReferentialAction.Cascade' needs to be changed to '...: ReferentialAction.NoAction' manually. After that open the Package Manager Console again and write
+"update-database". After that you should have a working web app with an empty database . If you wish to fill the database with data , you can do it manually through SQL or register as admin@gmail.com and have admin privileges (you can change the admin e-mail by editing
+this line in Program.cs :"string email = "admin@gmail.com";"). You might get an error related to user roles when launching the app for the 1st time or not see admin privilages when opening the Sponsors page, just launch it again and log out and log in and it should work.
 
 Notes for the Azure Live Demo:
+- (The Live Demo might be disabled for cost related reasons)
 - Link : europebjj.azurewebsites.net
 - If you get an error when clicking the azure link, try opening the link again in 10-15 minutes, since the database is on a serverless plan and has periodic pauses.

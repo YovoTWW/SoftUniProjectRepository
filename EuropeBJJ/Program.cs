@@ -12,6 +12,7 @@ namespace EuropeBJJ
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            //var connectionString = builder.Configuration.GetConnectionString("SqlServer") ?? throw new InvalidOperationException("Connection string  not found.");
             var connectionString = builder.Configuration.GetConnectionString("AzureConnection") ?? throw new InvalidOperationException("Connection string  not found.");
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
